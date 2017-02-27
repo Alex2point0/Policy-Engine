@@ -1,0 +1,5 @@
+<xsd:choice minOccurs="0" maxOccurs="unbounded">
+    <xsd:element name="relationship-node" type="RelationshipNodeType" minOccurs="0" maxOccurs="unbounded"/>
+    <xsd:element name="attribute-node" type="AttributeNodeType" minOccurs="0" maxOccurs="unbounded"/>
+    <xsd:element name="already-proven-node" type="AlreadyProvenNodeType" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:choice>

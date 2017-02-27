@@ -1,0 +1,67 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns="${service.getTargetNamespace()}"
+      targetNamespace="${service.getTargetNamespace()}"
+      elementFormDefault="qualified" version="1.0">
+
+      <!-- error response -->
+      <xsd:element name="error-response" type="Error"></xsd:element>
+
+      <!--  reload rulebase -->
+      <xsd:element name="load-rulebase-request" type="LoadRulebaseRequest"/>
+      <xsd:element name="load-rulebase-response" type="LoadRulebaseResponse"/>
+
+      <!--  List Rulebases Request and Response -->
+      <xsd:element name="list-rulebases-request">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="list-rulebases-response" type="ListRulebases" />
+
+      <!--  Get Server Version Response and Request -->
+      <xsd:element name="get-version-response" type="GetVersionResponse" />
+      <xsd:element name="get-version-request">
+        <xsd:complexType />
+      </xsd:element>
+
+      <!-- Get Server Version -->
+      <xsd:complexType name="GetVersionResponse">
+        <xsd:sequence>
+          <xsd:element name="determinations-server-version" type="xsd:string" minOccurs="1"/>
+          <xsd:element name="determinations-engine-version" type="xsd:string" minOccurs="1"/>
+          <xsd:element name="determinations-engine-timezone" type="xsd:string" minOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="LoadRulebaseRequest">
+        <xsd:sequence>
+          <xsd:element name="rulebase" type="xsd:string" minOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="LoadRulebaseResponse">
+        <xsd:sequence>
+          <xsd:element name="rulebase-loaded" type="xsd:string" minOccurs="1"/>
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="ListRulebases">
+        <xsd:sequence>
+          <xsd:element name="rulebase" type="RuleBase" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="RuleBase">
+        <xsd:sequence>
+          <xsd:element name="generic-wsdl" type="xsd:string" minOccurs="1"/>
+          <xsd:element name="specific-wsdl" type="xsd:string" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+      </xsd:complexType>
+
+      <xsd:complexType name="Error">
+        <xsd:sequence>
+          <xsd:element name="code" type="xsd:string"/>
+          <xsd:element name="message" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+</xsd:schema>
+

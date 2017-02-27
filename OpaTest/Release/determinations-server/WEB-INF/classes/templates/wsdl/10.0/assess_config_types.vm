@@ -1,0 +1,10 @@
+<!--XSD Types for the Assessment Configuration -->
+<xsd:complexType name="AssessmentConfiguration">
+	<xsd:sequence>
+		<xsd:element name="show-silent" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="show-invisible" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="show-properties" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="show-events" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="resolve-indecision-relationships" type="xsd:boolean" minOccurs="0"/>
+	</xsd:sequence>
+</xsd:complexType>

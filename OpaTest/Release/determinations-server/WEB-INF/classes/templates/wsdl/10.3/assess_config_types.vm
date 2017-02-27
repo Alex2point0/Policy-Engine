@@ -1,0 +1,45 @@
+<!--XSD Types for the Assessment Configuration -->
+<xsd:complexType name="AssessmentConfiguration">
+	<xsd:sequence>
+		<xsd:element name="show-silent" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="show-invisible" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="show-properties" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="show-events" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="resolve-indecision-relationships" type="xsd:boolean" minOccurs="0"/>
+		<xsd:element name="outcome" type="ResponseOutcome" minOccurs="0" maxOccurs="1"/>
+	</xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="ResponseOutcome">
+	<xsd:sequence>
+		<xsd:element name="entity" minOccurs="0" maxOccurs="unbounded">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsd:element name="attribute-outcome" type="OutcomeType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="relationship-outcome" type="OutcomeType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="id" type="xsd:string" use="required"/>
+			</xsd:complexType>	
+		</xsd:element>
+	</xsd:sequence>
+</xsd:complexType>
+<!--
+<xsd:complexType name="AttributeOutcome">
+	<xsd:complexContent>
+		<xsd:extension base="OutcomeType">
+   	 		<xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+    	</xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
+<xsd:complexType name="RelationshipOutcome">
+	<xsd:complexContent>
+		<xsd:extension base="OutcomeType">
+   	 		<xsd:attribute name="state" type="StateEnum" use="optional"/>
+    	</xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType> -->
+<xsd:complexType name="OutcomeType">
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+   	<xsd:attribute name="outcome-style" type="OutcomeStyleEnum" use="optional"/>
+    <xsd:attribute name="unknown-outcome-style" type="OutcomeStyleEnum" use="optional"/>
+    <xsd:attribute name="known-outcome-style" type="OutcomeStyleEnum" use="optional"/>
+</xsd:complexType>

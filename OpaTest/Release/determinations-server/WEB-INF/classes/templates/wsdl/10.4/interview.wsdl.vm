@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+#set($serviceName = "${service.getName()}_${service.getRulebaseXmlId()}")
+<wsdl:definitions name="interview_service_10_2"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:${service.getNamspacePrefix()}="${service.getTargetNamespace()}"
+                  xmlns:${soap-prefix}="${soap-namespace}"
+                  xmlns:${i18n-prefix}="${i18n-namespace}"
+                  targetNamespace="${service.getTargetNamespace()}">
+  <wsdl:types>
+	${wsdl-types}
+  </wsdl:types>
+
+  <!-- request and response messages used in operations-->
+  <wsdl:message name="OpenSessionRequest" >
+    <wsdl:part name="OpenSessionRequest" element="${service.getNamspacePrefix()}:open-session-request" />
+  </wsdl:message>
+  <wsdl:message name="OpenSessionResponse">
+    <wsdl:part name="OpenSessionResponse" element="${service.getNamspacePrefix()}:open-session-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="CloseSessionRequest" >
+    <wsdl:part name="CloseSessionRequest" element="${service.getNamspacePrefix()}:close-session-request" />
+  </wsdl:message>
+  <wsdl:message name="CloseSessionResponse">
+    <wsdl:part name="CloseSessionResponse" element="${service.getNamspacePrefix()}:close-session-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="InvestigateRequest" >
+    <wsdl:part name="InvestigateRequest" element="${service.getNamspacePrefix()}:investigate-request" />
+  </wsdl:message>
+  <wsdl:message name="InvestigateResponse">
+    <wsdl:part name="InvestigateResponse" element="${service.getNamspacePrefix()}:investigate-response" />
+  </wsdl:message>
+
+  <wsdl:message name="GetScreenRequest" >
+    <wsdl:part name="GetScreenRequest" element="${service.getNamspacePrefix()}:get-screen-request" />
+  </wsdl:message>
+  <wsdl:message name="GetScreenResponse">
+    <wsdl:part name="GetScreenResponse" element="${service.getNamspacePrefix()}:get-screen-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="ListScreensRequest" >
+    <wsdl:part name="ListScreensRequest" element="${service.getNamspacePrefix()}:list-screens-request" />
+  </wsdl:message>
+  <wsdl:message name="ListScreensResponse">
+    <wsdl:part name="ListScreensResponse" element="${service.getNamspacePrefix()}:list-screens-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="ListGoalsRequest" >
+    <wsdl:part name="ListGoalsRequest" element="${service.getNamspacePrefix()}:list-goals-request" />
+  </wsdl:message>
+  <wsdl:message name="ListGoalsResponse">
+    <wsdl:part name="ListGoalsResponse" element="${service.getNamspacePrefix()}:list-goals-response" />
+  </wsdl:message>
+    
+  <wsdl:message name="GetDecisionReportRequest" >
+    <wsdl:part name="GetDecisionReportRequest" element="${service.getNamspacePrefix()}:get-decision-report-request" />
+  </wsdl:message>
+  <wsdl:message name="GetDecisionReportResponse">
+    <wsdl:part name="GetDecisionReportResponse" element="${service.getNamspacePrefix()}:get-decision-report-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="GetDocumentRequest" >
+    <wsdl:part name="GetDocumentRequest" element="${service.getNamspacePrefix()}:get-document-request" />
+  </wsdl:message>
+  <wsdl:message name="GetDocumentResponse">
+    <wsdl:part name="GetDocumentResponse" element="${service.getNamspacePrefix()}:get-document-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="GetUserSetDataRequest" >
+    <wsdl:part name="GetUserSetDataRequest" element="${service.getNamspacePrefix()}:get-user-set-data-request" />
+  </wsdl:message>
+  <wsdl:message name="GetUserSetDataResponse">
+    <wsdl:part name="GetUserSetDataResponse" element="${service.getNamspacePrefix()}:get-user-set-data-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="SaveCaseRequest" >
+    <wsdl:part name="SaveCaseRequest" element="${service.getNamspacePrefix()}:save-case-request" />
+  </wsdl:message>
+  <wsdl:message name="SaveCaseResponse">
+    <wsdl:part name="SaveCaseResponse" element="${service.getNamspacePrefix()}:save-case-response" />
+  </wsdl:message> 
+  
+  <wsdl:message name="LoadCaseRequest" >
+    <wsdl:part name="LoadCaseRequest" element="${service.getNamspacePrefix()}:load-case-request" />
+  </wsdl:message>
+  <wsdl:message name="LoadCaseResponse">
+    <wsdl:part name="LoadCaseResponse" element="${service.getNamspacePrefix()}:load-case-response" />
+  </wsdl:message>
+  
+  <wsdl:message name="SetScreenRequest" >
+    <wsdl:part name="SetScreenRequest" element="${service.getNamspacePrefix()}:set-screen-request" />
+  </wsdl:message>
+  <wsdl:message name="SetScreenResponse">
+    <wsdl:part name="SetScreenResponse" element="${service.getNamspacePrefix()}:set-screen-response" />
+  </wsdl:message> 
+  
+  <wsdl:message name="ListCasesRequest" >
+    <wsdl:part name="ListCasesRequest" element="${service.getNamspacePrefix()}:list-cases-request" />
+  </wsdl:message>
+  <wsdl:message name="ListCasesResponse">
+    <wsdl:part name="ListCasesResponse" element="${service.getNamspacePrefix()}:list-cases-response" />
+  </wsdl:message> 
+  
+  
+  <wsdl:portType name="${serviceName}_type">
+      #foreach($action in ${service.getAllActions()})
+      <wsdl:operation name="${action.getName()}">
+          <wsdl:input message="${service.getNamspacePrefix()}:${action.getName()}Request"/>
+          <wsdl:output message="${service.getNamspacePrefix()}:${action.getName()}Response"/>
+      </wsdl:operation>
+      #end
+  </wsdl:portType>
+
+   <wsdl:binding name="${serviceName}" type="${service.getNamspacePrefix()}:${serviceName}_type">
+       <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+       #foreach($action in ${service.getAllActions()})
+       <wsdl:operation name="${action.getName()}">
+           <soap:operation soapAction="${action.getSoapAction()}"/>
+           <wsdl:input>
+               <soap:body use="literal"/>
+           </wsdl:input>
+           <wsdl:output>
+               <soap:body use="literal"/>
+           </wsdl:output>
+       </wsdl:operation>
+       #end
+   </wsdl:binding>
+
+   <wsdl:service name="${serviceName}">
+       <wsdl:port binding="${service.getNamspacePrefix()}:${serviceName}" name="${serviceName}">
+           <soap:address location="${request.getAbsoluteServiceURL(${service.getEndpoint()})}"/>
+       </wsdl:port>
+   </wsdl:service>
+
+</wsdl:definitions>

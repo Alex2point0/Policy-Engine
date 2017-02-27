@@ -1,0 +1,178 @@
+/* Attach the event handlers to each of the decision report and data review node images */
+function attachClickHandlers() {
+    var decisionReport = document.getElementById("drtree");
+    if (decisionReport != null) {
+        attachClickHandlersForDecisionReportNodes(decisionReport);
+    } else {
+        var images = document.getElementsByTagName("img");
+        for (var i = 0; i < images.length; i++) {
+            var imgNode = images[i];
+            if (imgNode.className == 'nodeicon') {
+                attachExpandCollapseFunction(imgNode);
+            }
+        }
+    }
+
+}
+
+// Attach the click handler
+function attachExpandCollapseFunction( node ) {
+    node.onclick = expandCollapseTree;
+}
+
+function attachClickHandlersForDecisionReportNodes(decisionReport) {
+    var images = (decisionReport == null) ? [] : decisionReport.getElementsByTagName("img");
+
+    // For each of the images on the document, if it is a decision report node icon,
+    // perform the specified function call
+    var iterateReportNodes = function( target ) {
+        for (var i = 0; i < images.length; i++) {
+            var imgNode = images[i];
+            if (imgNode.className == 'nodeicon') {
+                target( imgNode );
+            }
+        }
+    }
+
+    // Collapse nodes beyond the specified depth
+    var defaultTreeDepth = function( imgNode ) {
+        var reportNode = jQuery(imgNode.parentNode);
+        var targetDepth = ${decision-report-default-depth};
+
+        if((targetDepth > 0) && reportNode.hasClass('expanded')) {
+            var depth = findNodeDepth( imgNode, decisionReport );
+
+            if(depth >= targetDepth) {
+                reportNode.addClass('collapsed').removeClass('expanded');
+                imgNode.src = "${context-root-path}${image-resource-request}/ei-expand.gif";
+                imgNode.alt = "${tree-expand-alt}";
+            }
+        }
+    }
+
+    // Now invoke
+    iterateReportNodes( attachExpandCollapseFunction );
+    iterateReportNodes( defaultTreeDepth );
+}
+
+function findNodeDepth(node, targetParent) {
+    var depth = 0;
+
+    while((node != null) && (node != targetParent)) {
+        if(node.tagName == "LI") {
+            depth++;
+        }
+        node = node.parentNode;
+    }
+
+    return depth;
+}
+
+/* Event callback function invoked when a decision report/data review node icon is clicked */
+function expandCollapseTree() {
+    var currentNode = jQuery(this.parentNode);
+
+    /* Ensure that the tag name of the node icon's parent element is a list item (the
+     * node object */
+    if (!currentNode.is('li')) {
+        return;
+    }
+
+    if (currentNode.hasClass('expanded')) {
+        currentNode.addClass('collapsed').removeClass('expanded');
+        this.src = "${context-root-path}${image-resource-request}/ei-expand.gif";
+        this.alt = "${tree-expand-alt}";
+    } else if (currentNode.hasClass('collapsed')) {
+        currentNode.addClass('expanded').removeClass('collapsed');
+        this.src = "${context-root-path}${image-resource-request}/ei-collapse.gif";
+        this.alt = "${tree-collapse-alt}";
+    } else {
+        return;
+    }
+    return;
+}
+
+function expandCollapseTreeArrowKeys(event) {
+    if (!event) {
+        event = window.event;
+    }
+    
+    var node;
+    if (event.target)
+    	node = event.target;
+    else if(event.srcElement)
+    	node = event.srcElement;
+
+    var currentNode = node.parentNode;
+    var isExpanded = jQuery(currentNode).is(".expanded");
+
+    /* Ensure that the tag name of the node icon's parent element is a list item (the
+     * node object */
+    if (currentNode.tagName != 'LI') {
+        return true;
+    }
+    var imgNode;
+    for (var i = 0; i < currentNode.childNodes.length; i++) {
+	    if (currentNode.childNodes[i].className == "nodeicon") {
+	      imgNode = currentNode.childNodes[i];
+	      break;
+	    }
+    }
+
+    // handle cursor keys
+    if (event.keyCode == 37) { //left arrow = collapse
+	    if (isExpanded) {
+            jQuery(currentNode).addClass('collapsed').removeClass('expanded');
+	        imgNode.src = "${context-root-path}${image-resource-request}/ei-expand.gif";
+	        imgNode.alt = "${tree-expand-alt}";
+	    }
+    } else if (event.keyCode == 39) {  //right arrow = expand
+        if (!isExpanded) {
+            jQuery(currentNode).addClass('expanded').removeClass('collapsed');
+	        imgNode.src = "${context-root-path}${image-resource-request}/ei-collapse.gif";
+	        imgNode.alt = "${tree-collapse-alt}";
+	    }
+    }
+    return true;
+}
+
+function goToDecisionReportRef(nodeId) {
+	var refNode=document.getElementById(nodeId);
+	if (refNode.tagName != 'LI') {
+        return;
+    }
+    expandNodesToTopNode(refNode);
+    window.scrollTo(refNode.offsetLeft,refNode.offsetTop); 
+}
+
+function expandNodesToTopNode(refNode) {
+	var moveUp = true;
+	var currentNode = jQuery(refNode);
+	while (moveUp) {
+	    if (currentNode.hasClass('collapsed')) {
+	        currentNode.addClass('expanded').removeClass('collapsed');
+	        var imgNode;
+	        for (var i = 0; i < currentNode.childNodes.length; i++) {
+			    if (currentNode.childNodes[i].className == "nodeicon") {
+			      imgNode = currentNode.childNodes[i];
+			      break;
+			    }
+		    }
+	        imgNode.src = "${context-root-path}${image-resource-request}/ei-collapse.gif";
+	        imgNode.alt = "${tree-collapse-alt}";
+    	}
+    	var parentNode = refNode.parentNode;
+    	if (parentNode.tagName == 'UL' && parentNode.Id !="drtree") {
+    		currentNode = parentNode.parentNode;
+    	} else {
+    		moveUp = false;
+    	}
+	}
+}
+
+/* Invoke the function to attach the click event handlers when this page loads */
+if (window.addEventListener) {
+    window.addEventListener("load", attachClickHandlers, false);
+} else if (window.attachEvent) {
+    window.attachEvent("onload", attachClickHandlers);
+}

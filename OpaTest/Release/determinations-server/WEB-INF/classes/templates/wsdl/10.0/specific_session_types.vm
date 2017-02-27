@@ -1,0 +1,261 @@
+<!-- Specific Relationship Types -->
+<xsd:complexType name="RelationshipInstance">
+    <xsd:sequence>
+        <xsd:element name="target" type="RelationshipTarget" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="decision-report" type="DecisionReport" minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="outcome-style" type="RelationshipOutcomeStyleEnum"/>
+    <xsd:attribute name="unknown-outcome-style" type="RelationshipOutcomeStyleEnum"/>
+    <xsd:attribute name="known-outcome-style" type="RelationshipOutcomeStyleEnum"/>
+    <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+    <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+    <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+    <xsd:attribute name="state" type="KnownValueEnum"/>
+</xsd:complexType>
+
+<xsd:complexType name="RelationshipInstanceToOne">
+  <xsd:sequence>
+    <xsd:element name="target" type="RelationshipTarget" minOccurs="1"/>
+    <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+<!-- Specific Attribute Types  -->
+<xsd:complexType name="BooleanDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="boolean-val" type="xsd:boolean"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="number-val" type="xsd:decimal"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="NumberDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="number-val" type="xsd:decimal"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="TextDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="text-val" type="xsd:string"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="DateDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="date-val" type="xsd:date"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="DateTimeDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="datetime-val" type="xsd:dateTime"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="TimeDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="time-val" type="xsd:time"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="BooleanChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="BooleanDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="CurrencyChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="CurrencyDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="NumberChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="NumberDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="DateChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="DateDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="DateTimeChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="DateTimeDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="TextChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="TextDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="AttributeBoolean">
+      <xsd:complexContent>
+          <xsd:extension base="BooleanDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="BooleanChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="AttributeCurrency">
+      <xsd:complexContent>
+          <xsd:extension base="NumberDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="CurrencyChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="AttributeNumber">
+      <xsd:complexContent>
+          <xsd:extension base="NumberDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="NumberChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="AttributeDate">
+      <xsd:complexContent>
+          <xsd:extension base="DateDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="DateChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="AttributeDateTime">
+      <xsd:complexContent>
+          <xsd:extension base="DateTimeDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="DateChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="AttributeTime">
+      <xsd:complexContent>
+          <xsd:extension base="TimeDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="DateChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="AttributeText">
+      <xsd:complexContent>
+          <xsd:extension base="TextDataType">
+              <xsd:sequence>
+                  <xsd:element name="change-point" type="TextChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                  <xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+                  <xsd:element name="user-data" type="UserData" minOccurs="0"/>
+                  <xsd:element name="decision-report" type="DecisionReport" minOccurs="0"/>
+                  <xsd:element name="screen" type="ScreenDefinition" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+              <xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+              <xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+              <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+          </xsd:extension>
+      </xsd:complexContent>
+  </xsd:complexType>
+${entity-types}
+
+<xsd:complexType name="Session">
+  <xsd:all>
+     ${entities}
+  </xsd:all>
+</xsd:complexType>

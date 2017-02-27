@@ -1,0 +1,11 @@
+<!--XSD Types for Assess Error Response -->
+<!-- error response -->
+<xsd:element name="error-response" type="Error"/>
+
+<xsd:complexType name="Error">
+	<xsd:sequence>
+		<xsd:element name="code" type="xsd:string"/>
+		<xsd:element name="message" type="xsd:string"/>
+		<xsd:element name="events" type="ListEventsType" minOccurs="0"/>
+	</xsd:sequence>
+</xsd:complexType>

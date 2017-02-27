@@ -1,0 +1,400 @@
+<root schema-version="1" product-version="10.4.7.86">
+  <entities>
+    <entity ref="global">
+      <attribute name="b1" type="boolean" ruleburst="true" is-used="True">
+        <text lang="en-US">
+          <base>the engine satisfies d1049248 requirements</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),sb('the engine',singular),o('d1049248 requirements'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b2" type="boolean" ruleburst="true" is-used="True">
+        <text lang="en-US">
+          <base>the part satisfies 050503128 license requirements</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),sb('the part',singular),o('050503128 license requirements'))</parse>
+        </text>
+      </attribute>
+      <attribute name="p4" type="text" ruleburst="true" is-used="True" default-gender="neuter">
+        <text lang="en-US">
+          <base>the ln number</base>
+        </text>
+      </attribute>
+    </entity>
+    <entity name="the license" id="license" containment-relationship-id="licenseforengineline" containment-parent-id="global">
+      <attribute name="p1" type="text" ruleburst="true" is-used="True" default-gender="neuter">
+        <text lang="en-US">
+          <base>the license</base>
+        </text>
+      </attribute>
+    </entity>
+    <entity name="the services" id="services" containment-relationship-id="serviceunderlicense" containment-parent-id="license">
+      <attribute name="p2" type="text" ruleburst="true" is-used="True" default-gender="neuter">
+        <text lang="en-US">
+          <base>the services</base>
+        </text>
+      </attribute>
+    </entity>
+    <entity name="the technical data" id="technicaldata" containment-relationship-id="technicaldataunderlicense" containment-parent-id="license">
+      <attribute name="p3" type="text" ruleburst="true" is-used="True" default-gender="neuter">
+        <text lang="en-US">
+          <base>the technical data</base>
+        </text>
+      </attribute>
+    </entity>
+  </entities>
+  <relationships>
+    <relationship type="OneToMany" relationship-id="technicaldataunderlicense" reverse-relationship-id="license_technicaldataunderlicense_rev" text="the technical data under license" source="license" target="technicaldata" is-implicit="false" is-containment="true" />
+    <relationship type="OneToMany" relationship-id="licenseforengineline" reverse-relationship-id="global_licenseforengineline_rev" text="the license for engine line" source="global" target="license" is-implicit="false" is-containment="true" />
+    <relationship type="OneToMany" relationship-id="serviceunderlicense" reverse-relationship-id="license_serviceunderlicense_rev" text="the service under license" source="license" target="services" is-implicit="false" is-containment="true" />
+  </relationships>
+  <rules>
+    <rule id="0" name="the license for engine line" ruleburst="true" concludes="InferInstance(licenseforengineline)" folder="0">
+      <rule-xml>
+        <table-conclude-instance relationship-id="licenseforengineline" source="global" source-scope-id="global0">
+          <row>
+            <identity>
+              <string-value>D1049248</string-value>
+            </identity>
+            <condition>
+              <attribute attr-id="b1" />
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>050503128</string-value>
+            </identity>
+            <condition>
+              <attribute attr-id="b2" />
+            </condition>
+          </row>
+        </table-conclude-instance>
+      </rule-xml>
+    </rule>
+    <rule id="1" name="the ln number" ruleburst="true" concludes="p4" folder="0" source-offset="148">
+      <rule-xml>
+        <table-conclude attr-id="p4" entity-id="global" scope-id="global0">
+          <row>
+            <value>
+              <string-value>D1049248</string-value>
+            </value>
+            <condition>
+              <attribute attr-id="b1" />
+            </condition>
+          </row>
+          <row>
+            <value>
+              <string-value>050503128</string-value>
+            </value>
+            <condition>
+              <attribute attr-id="b2" />
+            </condition>
+          </row>
+          <otherwise>
+            <string-value>UNKNOWN</string-value>
+          </otherwise>
+        </table-conclude>
+      </rule-xml>
+    </rule>
+    <rule id="2" name="the service under license" ruleburst="true" concludes="InferInstance(serviceunderlicense)" folder="0" source-offset="303">
+      <rule-xml>
+        <table-conclude-instance relationship-id="serviceunderlicense" source="license" source-scope-id="license0">
+          <row>
+            <identity>
+              <string-value>Design the Geometry of the Parts</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Design the Geometry of the Parts</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Mechanical Analysis - Stress Analysis</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Perform Heat Transfer and Secondary Flow Analysis</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Determine Operating Clearance with Adjoining Hardware</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Failure Analysis</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Mechanical Analysis - Dynamics and Structural System Analysis</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+        </table-conclude-instance>
+      </rule-xml>
+    </rule>
+    <rule id="3" name="the technical data under license" ruleburst="true" concludes="InferInstance(technicaldataunderlicense)" folder="0" source-offset="940">
+      <rule-xml>
+        <table-conclude-instance relationship-id="technicaldataunderlicense" source="license" source-scope-id="license0">
+          <row>
+            <identity>
+              <string-value>Engineering Analysis Initial Conditions and Parameters</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Development Change in Design (DCID) and Change in Design (CID)</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Analysis Boundary Conditions</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Structural Analysis Models and Results</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Heat Transfer and Secondary Flow Models</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>2 and 3 Dimensional Geometrical Models</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Aerodynamic Model Results</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Material Review Board (MRB) Non-Conforming Hardware Support Documentation</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Engineering Drawings and Assembly Drawings</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Development Problem Reports</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Process Specifications</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Part Specifications</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Engine Test Data</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Engine Analytical Predictions</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Visual Aid Photographs</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Manufacturing Quality Data</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Manufacturing Routing and Job Sheets</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Manufacturing Process Specifications and Capability Data</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Manufacturing and Standard Work Instructions</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Shroud and Shroud Support Design Practices</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Design Record Books</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+          <row>
+            <identity>
+              <string-value>Field data and departure record history</string-value>
+            </identity>
+            <condition>
+              <scope-for scope-ref="global0" target-entity-id="global">
+                <attribute attr-id="b1" />
+              </scope-for>
+            </condition>
+          </row>
+        </table-conclude-instance>
+      </rule-xml>
+    </rule>
+  </rules>
+</root>

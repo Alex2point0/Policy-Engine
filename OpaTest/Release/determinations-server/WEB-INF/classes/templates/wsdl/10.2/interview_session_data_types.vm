@@ -1,0 +1,49 @@
+<!-- 
+NOTE: The interview service uses the same marshalling code as the generic assess service to write out 
+session data. Therefore any updates to this template need to be made in parallel with generic_session_data_types.vm
+-->
+
+<xsd:complexType name="GlobalInstanceType">
+    <xsd:sequence>
+        <xsd:element name="attribute" type="AttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="relationship" type="RelationshipType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="entity" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="EntityType">
+    <xsd:sequence>
+        <xsd:element name="instance" type="EntityInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+</xsd:complexType>
+
+<xsd:complexType name="EntityInstanceType">
+    <xsd:sequence>
+        <xsd:element name="attribute" type="AttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="relationship" type="RelationshipType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="entity" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+</xsd:complexType>
+
+<xsd:complexType name="AttributeType">
+    <xsd:sequence>
+        #parse("wsdl/10.2/generic_attr_value.vm")
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+    <xsd:attribute name="type" type="xsd:string" use="optional"/>
+</xsd:complexType>
+
+<xsd:complexType name="RelationshipType">
+    <xsd:sequence>
+        <xsd:element name="target" type="RelationshipTargetType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+    <xsd:attribute name="state" type="xsd:string" use="optional"/>
+</xsd:complexType>
+
+<xsd:complexType name="RelationshipTargetType">
+    <!--the value of this attribute must match the id one of the specified entity instances -->
+    <xsd:attribute name="instance-id" type="xsd:string" use="required"/>
+</xsd:complexType>

@@ -1,0 +1,43 @@
+#set( $listValues = ${control.getListOptions()} )
+#if(${control.hasErrors()})
+    #set( $invalidState = "true")
+#else
+    #set( $invalidState = "false")
+#end
+
+#if(${control.isReadOnly()})
+    #set($hiddenState = "false")
+    #set($disabledState = "true")
+    #set($readOnlyString = "disabled")
+    #set($requiredState = "false")
+#elseif(${control.isMandatory()})
+    #set($hiddenState = "false")
+    #set($disabledState = "false")
+    #set($readOnlyString = "")
+    #set($requiredState = "true")
+#else
+    #set($hiddenState = "false")
+    #set($disabledState = "false")
+    #set($readOnlyString = "")
+    #set($requiredState = "false")
+#end
+<div class="radio-group" role="radiogroup" aria-labelledby="lbl-${control.getEncodedID()}"
+     aria-hidden="${hiddenState}" aria-disabled="${disabledState}"
+     aria-invalid="${invalidState}"
+     aria-required="${requiredState}"
+     aria-describedBy="msg-${control.getEncodedID()}">
+        #foreach( $listValue in $listValues )
+            #if(${listValue.isVisible()})
+                #set($id = "${control.getEncodedID()}n${velocityCount}")
+                <input type="radio" name="${control.getId()}" id="$id" $readOnlyString value="${listValue.getValue()}"
+                       ${styleAttribute} ${classAttribute}
+                       aria-labelledby="lbl-$id"
+                    #if( ${listValue.getValue()}  == ${control.getDisplayValue()})
+                       checked
+                    #end
+                ><label id="lbl-$id" for="$id">$listValue.getDisplayText()</label><br>
+
+
+            #end
+        #end
+</div>

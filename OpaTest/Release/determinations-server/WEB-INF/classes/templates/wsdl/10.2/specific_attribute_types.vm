@@ -1,0 +1,36 @@
+## Template to generate specific attribute data types
+#set($attrTypes = ${attribute-types})
+
+#foreach($attrType in $attrTypes)
+    <xsd:complexType name="${attrType.getName()}DataType">
+        <xsd:choice minOccurs="0">
+            <xsd:element name="${attrType.getName()}-val" type="xsd:${attrType.getXsdDataType()}"/>
+            <xsd:element name="uncertain-val" type="UncertainValue"/>
+            <xsd:element name="unknown-val" type="UnknownValue"/>
+        </xsd:choice>
+    </xsd:complexType>
+    <xsd:complexType name="${attrType.getName()}ChangePoint">
+        <xsd:complexContent>
+            <xsd:extension base="${attrType.getName()}DataType">
+                <xsd:attribute name="date" type="xsd:date"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="${attrType.getName()}AttributeType">
+        <xsd:complexContent>
+            <xsd:extension base="${attrType.getName()}DataType">
+                <xsd:sequence>
+                    <xsd:element name="change-point" type="${attrType.getName()}ChangePoint" minOccurs="0"
+                                 maxOccurs="unbounded"/>
+                    <!--this element will only be provided if the 'show-events' attribute is true in the assessment configuration options -->
+                    <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+                    <!--this element will only appear in a response for attribute outcome attributes whose outcome style is not 'value-only' -->
+                    <xsd:element name="decision-report" type="DecisionReportType" minOccurs="0"/>
+                </xsd:sequence>
+                <!--this property is returned for each attribute in a response -->
+                <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+                #parse("wsdl/10.2/outcome_common_attrs.vm")
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+#end

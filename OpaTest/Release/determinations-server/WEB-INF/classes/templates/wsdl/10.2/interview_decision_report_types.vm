@@ -1,0 +1,94 @@
+    <xsd:complexType name="DecisionReportControl">
+        <xsd:complexContent>
+            <xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:sequence>
+                        <!-- in the interview engine we should only be able to get a decision report for a top level goal. hence a decision 
+                            report screen should have a single child node for an attribute -->
+                        <xsd:element name="attribute-node-control" type="AttributeDecisionReportNodeControl" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:sequence>
+                <xsd:attribute name="ignore-silent" type="xsd:boolean" use="required" />
+                <xsd:attribute name="ignore-invisible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="AbstractDecisionReportNodeControl">
+        <xsd:complexContent>
+            <xsd:extension base="ControlBase">
+                <xsd:attribute name="id" type="xsd:string" use="required" />
+                <xsd:attribute name="is-base-level" type="xsd:boolean" use="required" />
+                <xsd:attribute name="is-user-set" type="xsd:boolean" use="required" />
+                <xsd:attribute name="is-known" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="AlreadyProvenNodeContent">
+        <xsd:attribute name="id" type="xsd:string" use="required" />
+    </xsd:complexType>
+    
+    <xsd:complexType name="AttributeDecisionReportNodeControl">
+        <xsd:complexContent>
+            <xsd:extension base="AbstractDecisionReportNodeControl">
+                <xsd:sequence>
+                    <xsd:element name="attribute-value" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                             <xsd:sequence>
+                                #parse("wsdl/10.2/generic_attr_value.vm")
+                            </xsd:sequence>
+                        </xsd:complexType>                      
+                    </xsd:element>
+                    <xsd:choice minOccurs="0" maxOccurs="1">
+                        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                            <xsd:element name="attribute-node-control" type="AttributeDecisionReportNodeControl" minOccurs="0" maxOccurs="unbounded" />
+                            <xsd:element name="relationship-node-control" type="RelationshipDecisionReportNodeControl" minOccurs="0" maxOccurs="unbounded" />
+                        </xsd:choice>
+                        <xsd:element name="already-proven-node" type="AlreadyProvenNodeContent" minOccurs="0" maxOccurs="1" />
+                    </xsd:choice>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="attribute-id" type="xsd:string" use="required" />
+                <xsd:attribute name="entity-id" type="xsd:string" use="required" />
+                <xsd:attribute name="instance-id" type="xsd:string" use="required" />
+                <xsd:attribute name="set-on-screen" type="xsd:string" use="optional" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="RelationshipDecisionReportNodeControl">
+        <xsd:complexContent>
+            <xsd:extension base="AbstractDecisionReportNodeControl">
+                <xsd:sequence>
+                    <xsd:choice minOccurs="0" maxOccurs="1">
+                        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                            <xsd:element name="attribute-node-control" type="AttributeDecisionReportNodeControl" minOccurs="0" maxOccurs="unbounded" />
+                            <xsd:element name="relationship-node-control" type="RelationshipDecisionReportNodeControl" minOccurs="0" maxOccurs="unbounded" />
+                            <xsd:element name="entity-instance-node-control" type="EntityInstanceDecisionReportNodeControl" minOccurs="0" maxOccurs="unbounded" />
+                        </xsd:choice>
+                        <xsd:element name="already-proven-node" type="AlreadyProvenNodeContent" minOccurs="0" maxOccurs="1" />
+                    </xsd:choice>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="relationship-id" type="xsd:string" use="required" />
+                <xsd:attribute name="source-entity-id" type="xsd:string" use="required" />
+                <xsd:attribute name="target-entity-id" type="xsd:string" use="required" /> 
+                <xsd:attribute name="source-instance-id" type="xsd:string" use="required" />
+                <xsd:attribute name="relationship-type" type="RelationshipCardinalityType" use="optional" /> ## RelationshipCardinalityType is defined in interview_screen_types.vm
+                <xsd:attribute name="set-on-screen" type="xsd:string" use="optional" />                
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="EntityInstanceDecisionReportNodeControl">
+        <xsd:complexContent>
+            <xsd:extension base="AbstractDecisionReportNodeControl">
+                <xsd:sequence>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="entity-id" type="xsd:string" use="required" />
+                <xsd:attribute name="instance-id" type="xsd:string" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>

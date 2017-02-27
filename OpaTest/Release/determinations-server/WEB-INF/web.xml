@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="OracleDeterminationsServer" version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>Oracle Determinations Server</display-name>
+
+    <servlet>
+        <description>Web Determinations Platform Servlet responsible for handling all http request to the Interactive Web
+            Platform
+        </description>
+        <servlet-name>DeterminationsServerSOAPServlet</servlet-name>
+        <servlet-class>
+            com.oracle.determinations.server.DSServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeterminationsServerSOAPServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+</web-app>

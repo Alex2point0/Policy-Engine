@@ -1,0 +1,80 @@
+#if(${service.isSpecific()})
+    #set ($session-data-element = ${service.getRulebaseXmlId()})
+#else
+    #set ($session-data-element = "session-data")
+#end
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns="${service.getTargetNamespace()}" 
+	targetNamespace="${service.getTargetNamespace()}" 
+	elementFormDefault="qualified" version="1.0">
+	
+	<!-- Assess Request and response -->
+	<xsd:element name="assess-request" type="AssessRequest"/>
+	<xsd:element name="assess-response" type="AssessResponse"/>
+	<!--  Get Rulebase Version Response and Request -->
+	<xsd:element name="get-rulebase-version-response" type="xsd:string"/>
+	<xsd:element name="get-rulebase-version-request">
+		<xsd:complexType/>
+	</xsd:element>
+	
+	<!-- List Screens Request and response -->
+	<xsd:element name="list-screens-response" type="ListScreensResponse"/>
+	<xsd:element name="list-screens-request">
+		<xsd:complexType/>
+	</xsd:element>
+	<!--  Get screen -->
+	<xsd:element name="get-screen-request" type="GetScreenRequest"/>
+	<xsd:element name="get-screen-response" type="GetScreenResponse"/>
+
+	
+	<xsd:complexType name="AssessResponse">
+		<xsd:sequence>
+			<xsd:element name="events" type="ListEvents" minOccurs="0"/>
+			<xsd:element name="${session-data-element}" type="Session"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AssessRequest">
+		<xsd:sequence>
+			<xsd:element name="config" type="AssessmentConfiguration" minOccurs="0"/>
+			<xsd:element name="${session-data-element}" type="Session"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="GetScreenRequest">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="screen-name" type="xsd:string"/>
+				<xsd:element name="screen-id" type="xsd:string"/>
+			</xsd:choice>
+			<xsd:element name="screen-entity" minOccurs="0">
+				<xsd:complexType>
+					<xsd:attribute name="entity-id" type="xsd:IDREF" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="${session-data-element}" type="Session" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetScreenResponse">
+		<xsd:sequence>
+			<xsd:element name="screen" type="ScreenDefinition"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ListScreensResponse">
+		<xsd:sequence>
+			<xsd:element name="screen-summary" type="ScreenSummary" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	#parse("wsdl/10.0/list_goals_types.vm")
+	#parse("wsdl/10.0/assess_config_types.vm")
+	#parse("wsdl/10.0/assess_error_types.vm")
+	#parse("wsdl/10.0/rulebase_events_types.vm")
+	#parse("wsdl/10.0/interactive_component_types.vm")
+	#parse("wsdl/10.0/session_data_common_types.vm")
+	#parse("wsdl/10.0/property_types.vm")
+	#if(${service.isSpecific()})
+	    #parse("wsdl/10.0/specific_session_types.vm")
+    #else
+        #parse("wsdl/10.0/generic_session_data_types.vm")
+    #end
+</xsd:schema>

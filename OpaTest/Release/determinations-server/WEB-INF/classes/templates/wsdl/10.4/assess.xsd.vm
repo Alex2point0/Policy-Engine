@@ -1,0 +1,34 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="${service.getTargetNamespace()}" 
+	targetNamespace="${service.getTargetNamespace()}" 
+	elementFormDefault="qualified" version="1.0">
+	
+	<!-- Assess Request and response -->
+	<xsd:element name="assess-request" type="AssessRequest"/>
+	<xsd:element name="assess-response" type="AssessResponse"/>
+	<xsd:complexType name="AssessResponse">
+		<xsd:sequence>
+			<xsd:element name="events" type="ListEventsType" minOccurs="0"/>
+			<xsd:element name="global-instance" type="GlobalInstanceType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="AssessRequest">
+		<xsd:sequence>
+			<xsd:element name="config" type="AssessmentConfiguration" minOccurs="0"/>
+			<xsd:element name="global-instance" type="GlobalInstanceType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	#parse("wsdl/10.2/list_goals_types.vm")
+	#parse("wsdl/10.3/assess_config_types.vm")
+    #parse("wsdl/10.2/enumerated_types.vm")
+    #parse("wsdl/10.2/assess_error_types.vm")
+    #parse("wsdl/10.2/event_types.vm")
+
+    #if(${service.isSpecific()})
+	    #parse("wsdl/10.4/specific_session_data_types.vm")
+    #else
+        #parse("wsdl/10.4/generic_session_data_types.vm")
+    #end
+</xsd:schema>

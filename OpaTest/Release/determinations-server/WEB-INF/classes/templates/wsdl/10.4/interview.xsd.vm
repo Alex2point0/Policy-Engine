@@ -1,0 +1,348 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="${service.getTargetNamespace()}" targetNamespace="${service.getTargetNamespace()}" elementFormDefault="qualified" version="1.0">
+
+    <xsd:complexType name="ErrorList">
+        <xsd:sequence>
+            <xsd:element name="error" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="WarningList">
+        <xsd:sequence>
+            <xsd:element name="warning" type="xsd:string" minOccurs="1" maxOccurs="unbounded" />        
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <!-- Base type for all stateful requests and responses --> 
+
+    <xsd:complexType name="BaseStatefulMessage">
+        <xsd:sequence>
+            <xsd:element name="interview-session-id" minOccurs="1" maxOccurs="1" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- ===========================  Requests =========================== -->
+    
+    <xsd:element name="open-session-request">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="global-instance" type="GlobalInstanceType" minOccurs="0" maxOccurs="1" />
+            </xsd:sequence>
+        </xsd:complexType>
+	</xsd:element>
+    
+    <xsd:element name="close-session-request" type="BaseStatefulMessage" />
+
+    <xsd:element name="investigate-request">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="goal-state" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="include-commentary" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                        <xsd:element name="screen" type="InterviewScreen" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>   
+
+    <xsd:element name="get-screen-request">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="screen-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="include-commentary" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>    
+    
+    <xsd:element name="list-screens-request">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:sequence minOccurs="0" maxOccurs="1">
+                            <xsd:element name="entity-id" type="xsd:string" />
+                            <xsd:element name="instance-id" type="xsd:string" />
+                            <xsd:choice minOccurs="0">
+                                <xsd:element name="attribute-id" type="xsd:string" />
+                                <xsd:element name="relationship-id" type="xsd:string" />
+                            </xsd:choice>
+                        </xsd:sequence>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>       
+    
+    <xsd:element name="list-goals-request" type="BaseStatefulMessage" /> 
+
+    <xsd:element name="get-decision-report-request">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="goal-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="show-silent" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="show-invisible" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>       
+    
+    <xsd:element name="get-user-set-data-request" type="BaseStatefulMessage" />
+
+    <xsd:element name="load-case-request">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="case-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>    
+    
+    <xsd:element name="save-case-request">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="case-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="set-screen-request">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="screen" type="InterviewScreen" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>    
+    
+    <xsd:element name="list-cases-request" type="BaseStatefulMessage" /> 
+    
+    <xsd:element name="get-document-request">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="document-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>    
+    
+    <!-- ===========================  Responses =========================== -->
+    
+    <xsd:element name="open-session-response">
+        <xsd:complexType>  
+            <xsd:sequence>
+                <xsd:element name="success" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                <xsd:element name="interview-session-id" minOccurs="0" maxOccurs="1" type="xsd:string" />
+                <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                <xsd:element name="warning-list" type="WarningList" minOccurs="0" maxOccurs="1" />
+            </xsd:sequence>  
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="close-session-response" type="BaseStatefulMessage" />
+
+    <xsd:element name="investigate-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="goal-state" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="progress" type="xsd:decimal" minOccurs="0" maxOccurs="1" />
+                        <xsd:element name="screen" type="InterviewScreen" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>   
+
+    <xsd:element name="get-screen-response">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="screen" type="InterviewScreen" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>    
+    
+    <xsd:element name="list-screens-response">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="entity" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="instance" minOccurs="0" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="screen" type="InterviewScreen" minOccurs="0" maxOccurs="unbounded" />
+                                            </xsd:sequence>
+                                            <xsd:attribute name="id" type="xsd:string" use="required" />
+                                        </xsd:complexType>    
+                                    </xsd:element>
+                                </xsd:sequence>
+                                <xsd:attribute name="id" type="xsd:string" use="required" />
+                            </xsd:complexType> 
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>        
+    
+    <xsd:element name="list-goals-response">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="entity" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="instance" minOccurs="0" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="goal" type="GoalDefinition" minOccurs="0" maxOccurs="unbounded" />
+                                            </xsd:sequence>
+                                            <xsd:attribute name="id" type="xsd:string" use="required" />
+                                        </xsd:complexType>    
+                                    </xsd:element>
+                                </xsd:sequence>
+                                <xsd:attribute name="id" type="xsd:string" use="required" />
+                            </xsd:complexType> 
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>
+    
+    <xsd:complexType name="GoalDefinition">
+        <xsd:sequence>
+            <xsd:element name="goal-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="goal-text" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="has-decision-report" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="attribute-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:element name="get-decision-report-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="screen" type="InterviewScreen" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>       
+    
+    <xsd:element name="get-user-set-data-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="global-instance" type="GlobalInstanceType"/>
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>   
+    
+    <xsd:element name="load-case-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="case-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="success" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                        <xsd:element name="warning-list" type="WarningList" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>
+    
+    <xsd:element name="save-case-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="case-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="success" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                        <xsd:element name="warning-list" type="WarningList" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>
+
+    <xsd:element name="set-screen-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="success" type="xsd:boolean" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="screen" type="InterviewScreen" minOccurs="0" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>    
+    </xsd:element>
+    
+    <xsd:element name="list-cases-response">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="case-id" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>
+    
+    <xsd:element name="get-document-response">
+		<xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="BaseStatefulMessage">
+                    <xsd:sequence>
+                        <xsd:element name="document-id" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="mime-type" type="xsd:string" minOccurs="1" maxOccurs="1" />
+                        <xsd:element name="document-content" type="xsd:base64Binary" minOccurs="1" maxOccurs="1" />
+                    </xsd:sequence>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+	</xsd:element>  
+    
+    #parse("wsdl/10.4/interview_screen_types.vm")
+    #parse("wsdl/10.2/interview_decision_report_types.vm")
+    #parse("wsdl/10.2/interview_session_data_types.vm")
+    
+</xsd:schema>

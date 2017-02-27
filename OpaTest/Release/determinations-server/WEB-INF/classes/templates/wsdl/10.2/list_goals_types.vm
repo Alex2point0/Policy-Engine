@@ -1,0 +1,23 @@
+<!-- XSD types for the list goals action -->
+<!-- List Goals Request and response -->
+	<xsd:element name="list-goals-response" type="ListGoalsResponse"/>
+	<xsd:element name="list-goals-request">
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:complexType name="ListGoalsResponse">
+		<xsd:sequence>
+			<xsd:element name="entity" type="ListGoalsEntityType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- list goals outputs an entity and attributes but has different required attributes  -->
+	<xsd:complexType name="ListGoalsEntityType">
+		<xsd:sequence>
+			<xsd:element name="attribute" type="ListGoalsAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="entity-id" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="ListGoalsAttributeType">
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<xsd:attribute name="type" type="AttributeTypeEnum" use="required"/>
+		<xsd:attribute name="text" type="xsd:string" use="required"/>
+	</xsd:complexType>

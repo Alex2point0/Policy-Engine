@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="determinations_service_10_2"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:${service.getNamspacePrefix()}="${service.getTargetNamespace()}"
+                  xmlns:${soap-prefix}="${soap-namespace}"
+                  xmlns:${i18n-prefix}="${i18n-namespace}"
+                  targetNamespace="${service.getTargetNamespace()}">
+
+    <wsdl:types>
+        ${wsdl-types}
+    </wsdl:types>
+
+    <wsdl:message name="GetServerInfoResponse">
+        <wsdl:part element="${service.getNamspacePrefix()}:get-server-info-response"
+                   name="GetServerInfoResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetServerInfoRequest">
+        <wsdl:part element="${service.getNamspacePrefix()}:get-server-info-request"
+                   name="GetServerInfoRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="ListRulebasesResponse">
+        <wsdl:part element="${service.getNamspacePrefix()}:list-rulebases-response"
+                   name="ListRulebasesResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ListRulebasesRequest">
+        <wsdl:part element="${service.getNamspacePrefix()}:list-rulebases-request"
+                   name="ListRulebasesRequest"/>
+    </wsdl:message>
+    <wsdl:message name="LoadRulebaseRequest">
+        <wsdl:part name="LoadRulebaseRequest" element="${service.getNamspacePrefix()}:load-rulebase-request"/>
+    </wsdl:message>
+
+    <wsdl:message name="LoadRulebaseResponse">
+        <wsdl:part name="LoadRulebaseResponse" element="${service.getNamspacePrefix()}:load-rulebase-response"/>
+    </wsdl:message>
+
+    <wsdl:portType name="${service.getName()}_type">
+        #foreach($action in ${service.getAllActions()})
+        <wsdl:operation name="${action.getName()}">
+            <wsdl:input message="${service.getNamspacePrefix()}:${action.getName()}Request"/>
+            <wsdl:output message="${service.getNamspacePrefix()}:${action.getName()}Response"/>
+        </wsdl:operation>
+        #end
+    </wsdl:portType>
+
+    <wsdl:binding name="${service.getName()}" type="${service.getNamspacePrefix()}:${service.getName()}_type">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        #foreach($action in ${service.getAllActions()})
+        <wsdl:operation name="${action.getName()}">
+            <soap:operation soapAction="${action.getSoapAction()}"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        #end
+    </wsdl:binding>
+
+    <wsdl:service name="${service.getName()}">
+        <wsdl:port binding="${service.getNamspacePrefix()}:${service.getName()}" name="${service.getName()}">
+            <soap:address location="${request.getAbsoluteServiceURL(${service.getEndpoint()})}"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

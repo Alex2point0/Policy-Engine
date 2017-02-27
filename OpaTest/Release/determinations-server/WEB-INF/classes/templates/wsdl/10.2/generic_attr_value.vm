@@ -1,0 +1,26 @@
+<!--node attribute value-->
+<xsd:choice minOccurs="0">
+    <xsd:element name="boolean-val" type="xsd:boolean"/>
+    <xsd:element name="date-val" type="xsd:date"/>
+    <xsd:element name="datetime-val" type="xsd:dateTime"/>
+    <xsd:element name="time-val" type="xsd:time"/>
+    <xsd:element name="number-val" type="xsd:decimal"/>
+    <xsd:element name="text-val" type="xsd:string"/>
+    <xsd:element name="uncertain-val" type="UncertainValue"/>
+    <xsd:element name="unknown-val" type="UnknownValue"/>
+</xsd:choice>
+<xsd:element name="change-point" minOccurs="0" maxOccurs="unbounded">
+    <xsd:complexType>
+        <xsd:choice minOccurs="0">
+            <xsd:element name="boolean-val" type="xsd:boolean"/>
+            <xsd:element name="date-val" type="xsd:date"/>
+            <xsd:element name="datetime-val" type="xsd:dateTime"/>
+            <xsd:element name="time-val" type="xsd:time"/>
+            <xsd:element name="number-val" type="xsd:decimal"/>
+            <xsd:element name="text-val" type="xsd:string"/>
+            <xsd:element name="uncertain-val" type="UncertainValue"/>
+            <xsd:element name="unknown-val" type="UnknownValue"/>
+        </xsd:choice>
+        <xsd:attribute name="date" type="xsd:date"/>
+    </xsd:complexType>
+</xsd:element>

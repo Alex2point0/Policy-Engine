@@ -1,0 +1,90 @@
+#parse("wsdl/10.2/decision_report_types.vm")
+#parse("wsdl/10.2/custom_property_types.vm")
+#parse("wsdl/10.2/specific_attribute_types.vm")
+
+#macro(writeAttributes $attrList)
+    #foreach($attr in $attrList)
+        #set($attrType = ${attr.getDataType()})
+        <xsd:element name="${attr.getName()}" type="${attrType.getName()}AttributeType" minOccurs="0" maxOccurs="1"/>
+    #end
+#end
+
+#macro(writeRelationships $relList)
+    #foreach($rel in $relList)
+        #if(${rel.isToOne()} == "true" || ${rel.isToOne()} == "True")
+            #set($relType = "RelationshipToOneType")
+        #else
+            #set($relType = "RelationshipType")
+        #end
+        <xsd:element name="${rel.getName()}" type="${relType}" minOccurs="0" maxOccurs="1"/>
+    #end
+#end
+
+#macro(writeChildEnt $entList)
+    #foreach($childEnt in ${entList})
+        <xsd:element name="list-${childEnt.getName()}" type="${childEnt.getName()}EntityListType" minOccurs="0" maxOccurs="1"/>
+    #end
+#end
+
+#foreach($ent in ${session-data-types.getAllEntities()})
+    #if(${ent.getName()} == "global")
+        #set($instTypeName = "GlobalInstanceType")
+        #set($isGlobal = "true")
+    #else
+        #set($isGlobal = "false")
+        #set($instTypeName = "${ent.getName()}InstanceType")
+        ##write out the entity type
+        #if(${ent.isContainmentToOne()} == "true" || ${ent.isContainmentToOne()} == "True")
+            #set($instMaxBounds = "1")
+        #else
+            #set($instMaxBounds = "unbounded")
+        #end
+
+
+        <xsd:complexType name="${ent.getName()}EntityListType">
+            <xsd:sequence>
+                <xsd:element name="${ent.getName()}" type="${instTypeName}" minOccurs="0" maxOccurs="${instMaxBounds}"/>
+                <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    #end
+
+   ##these variables are required for .NET compatibility
+    #set($attrs = ${ent.getAttributes()})
+    #set($rels = ${ent.getRelationships()})
+    #set($children = ${ent.getChildren()})
+   <xsd:complexType name="${instTypeName}">
+        <xsd:all>
+            #writeAttributes($attrs)
+            <xsd:element name="relationships" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:all>
+						#writeRelationships($rels)
+					</xsd:all>
+				</xsd:complexType>
+            </xsd:element>
+            #writeChildEnt($children)
+            #if(${isGlobal} == "true")
+                <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0" maxOccurs="1"/>
+            #end
+        </xsd:all>
+        #if(${isGlobal} == "false")
+            <xsd:attribute name="id" type="xsd:ID" use="required"/>
+        #end
+    </xsd:complexType>
+#end
+
+
+<!--relationship types -->
+#parse("wsdl/10.2/rel_common_types.vm")
+<xsd:complexType name="RelationshipToOneType">
+    <xsd:sequence>
+        <xsd:element name="target" type="RelationshipTargetType" minOccurs="0" maxOccurs="1"/>
+        <!--this element will only be provided if the 'show-events' attribute is true in the assessment configuration options -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="state" type="StateEnum"/>
+    <!--this property will only be provided in a response for relationship outcomes -->
+    <xsd:attribute name="inferred" type="xsd:boolean" use="optional"/>
+    <!--the following properties are used to configure relationship outcomes. The requestor must either specify the 'outcome-style' property or both the 'unknown-outcome-style' and the 'known-outcome-style' -->
+</xsd:complexType>

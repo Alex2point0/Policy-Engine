@@ -1,0 +1,55 @@
+#set( $listValues = ${control.getListOptions()} )
+
+#if(${control.hasErrors()})
+    #set( $invalidState = "true")
+#else
+    #set( $invalidState = "false")
+#end
+
+#if(${control.isReadOnly()})
+    #set($hiddenState = "false")
+    #set($disabledState = "true")
+    #set($readOnlyString = "disabled")
+    #set($requiredState = "false")
+#elseif(${control.isMandatory()})
+    #set($hiddenState = "false")
+    #set($disabledState = "false")
+    #set($readOnlyString = "")
+    #set($requiredState = "true")
+#else
+    #set($hiddenState = "false")
+    #set($disabledState = "false")
+    #set($readOnlyString = "")
+    #set($requiredState = "false")
+#end
+
+<select id="${control.getEncodedID()}" name="${control.getId()}" $readOnlyString ${styleAttribute} ${classAttribute}
+        aria-labelledby="lbl-${control.getEncodedID()}"
+        aria-hidden="${hiddenState}" aria-disabled="${disabledState}"
+        aria-invalid="${invalidState}"
+        aria-required="${requiredState}"
+        aria-describedBy="msg-${control.getEncodedID()}">
+    #foreach( $listValue in $listValues )
+        #if($listValue.isVisible())
+            #if( ${control.getDisplayValue()} == ${listValue.getValue()} )
+                #if(${listValue.getDisplayText()} == "")
+                    #set($displayText = "&nbsp;")
+                #else
+                    #set($displayText = ${listValue.getDisplayText()})
+                #end
+
+                <option selected value="${listValue.getValue()}">${displayText}</option>
+            #elseif ($control.getControlType().equals("BooleanInputControl"))
+                #if ($control.isTrue() && $listValue.getValue().equals(${boolean-true}))
+                        <option selected value="${listValue.getValue()}">${listValue.getDisplayText()}</option>
+                #elseif ($control.isFalse() && $listValue.getValue().equals(${boolean-false}))
+                        <option selected value="${listValue.getValue()}">${listValue.getDisplayText()}</option>
+                #else
+                        <option value="${listValue.getValue()}">${listValue.getDisplayText()}</option>
+                #end
+            #else
+               <option value="${listValue.getValue()}">${listValue.getDisplayText()}</option>
+            #end
+        #end
+    #end
+</select>

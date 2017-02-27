@@ -1,0 +1,37 @@
+<!-- Custom Property Types -->
+	<xsd:complexType name="TextProperty">
+		<xsd:sequence>
+			<xsd:element name="text-val" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="default-val" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="help-text" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="NumberProperty">
+		<xsd:sequence>
+			<xsd:element name="number-val" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="default-val" type="xsd:decimal" minOccurs="0"/>
+			<xsd:element name="help-text" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="BooleanProperty">
+		<xsd:sequence>
+			<xsd:element name="boolean-val" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="default-val" type="xsd:boolean" minOccurs="0"/>
+			<xsd:element name="help-text" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="ListCustomProperties">
+		<xsd:sequence>
+			<xsd:element name="property" type="CustomProperty" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="CustomProperty">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="key" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>

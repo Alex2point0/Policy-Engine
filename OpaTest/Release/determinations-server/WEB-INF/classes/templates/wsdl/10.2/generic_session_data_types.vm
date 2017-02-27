@@ -1,0 +1,50 @@
+<!-- 
+NOTE: The interview service uses the same marshalling code as the generic assess service to write out 
+session data. Therefore any updates to this template need to be made in parallel with interview_session_data_types.vm
+-->
+
+#parse("wsdl/10.2/decision_report_types.vm")
+#parse("wsdl/10.2/custom_property_types.vm")
+#parse("wsdl/10.2/rel_common_types.vm")
+<!--generic session data types -->
+<xsd:complexType name="GlobalInstanceType">
+    <xsd:sequence>
+        <xsd:element name="attribute" type="AttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="relationship" type="RelationshipType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="entity" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
+        <!--this element will only be provided if the 'show-events' attribute is true in the assessment configuration options -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+    </xsd:sequence>
+</xsd:complexType>
+<xsd:complexType name="EntityType">
+    <xsd:sequence>
+        <xsd:element name="instance" type="EntityInstanceType" minOccurs="0" maxOccurs="unbounded"/>
+        <!--this element will only be provided if the 'show-events' attribute is true in the assessment configuration options -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+</xsd:complexType>
+<xsd:complexType name="EntityInstanceType">
+    <xsd:sequence>
+        <xsd:element name="attribute" type="AttributeType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="relationship" type="RelationshipType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="entity" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+</xsd:complexType>
+
+<xsd:complexType name="AttributeType">
+    <xsd:sequence>
+        #parse("wsdl/10.2/generic_attr_value.vm")
+        <!--this element will only be provided if the 'show-events' attribute is true in the assessment configuration options -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+        <!--this element will only appear in a response for attribute outcome attributes whose outcome style is not 'value-only' -->
+        <xsd:element name="decision-report" type="DecisionReportType" minOccurs="0"/>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+    <!--this property is returned for each attribute in a response -->
+    <xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+    #parse("wsdl/10.2/outcome_common_attrs.vm")
+</xsd:complexType>
+
+

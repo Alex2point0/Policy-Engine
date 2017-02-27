@@ -1,0 +1,70 @@
+<!--decision report types -->
+<xsd:complexType name="DecisionReportType">
+    #parse("wsdl/10.2/decision_nodes.vm")
+    <xsd:attribute name="report-style" type="xsd:string"/>
+</xsd:complexType>
+<xsd:complexType name="AttributeNodeType">
+    <xsd:sequence>
+        #parse("wsdl/10.2/generic_attr_value.vm")
+
+        <!--node attribute custom properties -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+        <!--child nodes -->
+        #parse("wsdl/10.2/decision_nodes.vm")
+    </xsd:sequence>
+    <!--node id -->
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+    <!--node entity instance -->
+    <xsd:attribute name="entity-id" type="xsd:string" use="required"/>
+    <xsd:attribute name="instance-id" type="xsd:string" use="required"/>
+    <!-- will only show up if outcome is unknown and resolve-rels is true. Used to indicate whether or not the entity instance
+         actually exists in the session or was created to backwards chain unknown relationships -->
+    <xsd:attribute name="hypothetical-instance" type="xsd:boolean" use="required"/>
+    <!--node attribute id & type-->
+    <xsd:attribute name="attribute-id" type="xsd:string" use="required"/>
+    <xsd:attribute name="type" type="AttributeTypeEnum" use="required"/>
+    <!--node attribute current text -->
+    <xsd:attribute name="text" type="xsd:string" use="required"/>
+    <!--true if the attribute is inferred -->
+    <xsd:attribute name="inferred" type="xsd:boolean" use="required"/>
+    <!--only provided if start relevance != ChangePointDate.EARLIEST -->
+    <xsd:attribute name="start-relevance" type="xsd:date" use="optional"/>
+    <!--only provided if end relevance != ChangePointDate.LATEST -->
+    <xsd:attribute name="end-relevance" type="xsd:date" use="optional"/>
+
+</xsd:complexType>
+<xsd:complexType name="RelationshipNodeType">
+    <xsd:sequence>
+        <!--Relationship decision nodes now include targets. If the relationship is inferred this will be
+            Relationship.getAllKnownTargets otherwise it's Relationship.getAllTargets -->
+        <xsd:element name="target" type="RelationshipTargetType" minOccurs="0" maxOccurs="unbounded" />
+        <!--node relationship properties -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+        <!--child nodes -->
+        #parse("wsdl/10.2/decision_nodes.vm")
+    </xsd:sequence>
+    <!--node id -->
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+    <!--node relationship id -->
+    <xsd:attribute name="relationship-id" type="xsd:string" use="required"/>
+    <!--node relationship source instance-->
+    <xsd:attribute name="source-entity-id" type="xsd:string" use="required"/>
+    <xsd:attribute name="source-instance-id" type="xsd:string" use="required"/>
+    <!-- will only show up if outcome is unknown and resolve-rels is true. Used to indicate whether or not the source entity instance
+         actually exists in the session or was created to backwards chain unknown relationships -->
+    <xsd:attribute name="hypothetical-instance" type="xsd:boolean" use="required"/>
+    <!--node relationship target entity -->
+    <xsd:attribute name="target-entity-id" type="xsd:string" use="required"/>
+    <!-- relationship state - known, unknown or uncertain -->
+    <xsd:attribute name="state" type="StateEnum" use="required"/>
+    <!--true if the relationship is inferred -->
+    <xsd:attribute name="inferred" type="xsd:boolean" use="required"/>
+    <!--only provided if start relevance != ChangePointDate.EARLIEST -->
+    <xsd:attribute name="start-relevance" type="xsd:date" use="optional"/>
+    <!--only provided if end relevance != ChangePointDate.LATEST -->
+    <xsd:attribute name="end-relevance" type="xsd:date" use="optional"/>
+</xsd:complexType>
+<xsd:complexType name="AlreadyProvenNodeType">
+    <!-- this attribute's value is the id of the node that has already been proven -->
+    <xsd:attribute name="id" type="xsd:string" use="required"/>
+</xsd:complexType>

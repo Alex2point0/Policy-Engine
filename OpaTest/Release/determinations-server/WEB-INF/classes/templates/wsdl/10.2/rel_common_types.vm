@@ -1,0 +1,20 @@
+<xsd:complexType name="RelationshipType">
+    <xsd:sequence>
+        <xsd:element name="target" type="RelationshipTargetType" minOccurs="0" maxOccurs="unbounded"/>
+        <!--this element will only be provided if the 'show-events' attribute is true in the assessment configuration options -->
+        <xsd:element name="properties" type="ListCustomPropertiesType" minOccurs="0"/>
+        <!--this element will only appear in a response for attribute outcome attributes whose outcome style is not 'value-only' -->
+        <xsd:element name="decision-report" type="DecisionReportType" minOccurs="0"/>
+    </xsd:sequence>
+    #if(${service.isSpecific()} == "false" || ${service.isSpecific()} == "False")
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+    #end
+    <xsd:attribute name="state" type="StateEnum"/>
+    #parse("wsdl/10.2/outcome_common_attrs.vm")
+</xsd:complexType>
+
+
+<xsd:complexType name="RelationshipTargetType">
+    <!--the value of this attribute must match the id one of the specified entity instances -->
+    <xsd:attribute name="instance-id" type="xsd:string" use="required"/>
+</xsd:complexType>

@@ -1,0 +1,84 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="${service.getTargetNamespace()}" targetNamespace="${service.getTargetNamespace()}" elementFormDefault="qualified" version="1.0">
+	<!--  reload rulebase -->
+	<xsd:element name="load-rulebase-request" type="LoadRulebaseRequest"/>
+	<xsd:element name="load-rulebase-response" type="LoadRulebaseResponse"/>
+
+	<!--  List Rulebases Request and Response -->
+	<xsd:element name="list-rulebases-request">
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:element name="list-rulebases-response" type="ListRulebases"/>
+
+	<!--  Get Server Version Response and Request -->
+	<xsd:element name="get-server-info-response" type="GetServerInfoResponse"/>
+	<xsd:element name="get-server-info-request">
+		<xsd:complexType/>
+	</xsd:element>
+
+	<xsd:complexType name="GetServerInfoResponse">
+		<xsd:sequence>
+			<xsd:element name="determinations-server-version" type="xsd:string" minOccurs="1"/>
+			<xsd:element name="determinations-engine-version" type="xsd:string" minOccurs="1"/>
+			<xsd:element name="interview-engine-version" type="xsd:string" minOccurs="1"/>
+			<xsd:element name="determinations-engine-timezone" type="xsd:string" minOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LoadRulebaseRequest">
+		<xsd:sequence>
+			<xsd:element name="rulebase" type="xsd:string" minOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LoadRulebaseResponse">
+		<xsd:sequence>
+			<xsd:element name="rulebase-loaded" type="xsd:string" minOccurs="1"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ListRulebases">
+		<xsd:sequence>
+			<xsd:element name="rulebase" type="RuleBase" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RuleBase">
+		<xsd:sequence>
+			<xsd:element name="available-languages" type="LanguageListType" minOccurs="1"/>
+            <xsd:element name="rulebase-version" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+	        <xsd:element name="build-time" type="xsd:dateTime" minOccurs="1"/>
+            <xsd:element name="policy-modeling-version" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+	        <xsd:element name="available-services" type="ServiceListType" minOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="ServiceListType">
+		  <xsd:sequence>
+			  <xsd:element name="service" type="ServiceType" minOccurs="1" maxOccurs="unbounded" />
+		  </xsd:sequence>
+    </xsd:complexType>
+
+	<xsd:complexType name="ServiceType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="LanguageListType">
+		<xsd:sequence>
+			<xsd:element name="language" type="LanguageType"  minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="LanguageType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+</xsd:schema>
+

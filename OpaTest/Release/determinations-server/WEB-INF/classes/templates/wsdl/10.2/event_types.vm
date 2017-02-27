@@ -1,0 +1,22 @@
+<!--rulebase event types -->
+<xsd:complexType name="RulebaseEventType">
+		<xsd:sequence>
+			<xsd:element name="message" type="xsd:string"/>
+			<xsd:element name="parameters">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="value" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="decision-report" type="DecisionReportType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="entity-id" type="xsd:string" use="required"/>
+        <xsd:attribute name="instance-id" type="xsd:string" use="required"/>
+</xsd:complexType>
+<xsd:complexType name="ListEventsType">
+	<xsd:sequence>
+		<xsd:element name="event" type="RulebaseEventType" maxOccurs="unbounded"/>
+	</xsd:sequence>
+</xsd:complexType>

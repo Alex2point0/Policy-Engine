@@ -1,0 +1,54 @@
+## This template expects a variable named $control to be in context
+## This recursive function renders a node and its children
+#macro( renderNode $nodeControl)
+    ## Render the node only if it is visible
+    #if ($nodeControl.isVisible() )
+        #foreach($childNode in ${nodeControl.getControls()})
+            #if(${childNode.isLeaf()})
+                <li class="leaf" id="${childNode.getEncodedID()}" role="treeitem">
+                    <img class="nodeicon" src="${context-root-path}${image-resource-request}/${decision-report-leaf-image}" alt="${tree-leaf-alt}">
+                    #if(${childNode.isUserSet()} && ${childNode.getURL()})
+                        <a href="${childNode.getURL()}">${childNode.getText()}</a>
+                    #else
+                        <a class="dr-node-text" href="#">${childNode.getText()}</a>
+                    #end
+                </li>
+            #else
+                #if(${childNode.isAlreadyProven()})
+                    <li class="leaf" id=${childNode.getEncodedID()} role="treeitem">
+                        <img class="nodeicon" src="${context-root-path}${image-resource-request}/${decision-report-leaf-image}" alt="${tree-leaf-alt}">
+                        <a onclick="goToDecisionReportRef('${childNode.getEncodedRefId()}');" href="#">${childNode.getText()} ${decision-report-already-proven}</a>
+                    </li>
+                #else
+                    <li class="expanded" id="${childNode.getEncodedID()}" role="treeitem">
+                        <img class="nodeicon" src="${context-root-path}${image-resource-request}/${decision-report-collapse-image}" alt="${tree-collapse-alt}">
+                        #if(${childNode.isUserSet()} && ${childNode.getURL()})
+                            <a onkeydown="return expandCollapseTreeArrowKeys(event);" href="${childNode.getURL()}">${childNode.getText()}</a>
+                        #else
+                            <a class="dr-node-text" onkeydown="return expandCollapseTreeArrowKeys(event);" href="#${childNode.getEncodedID()}"> ${childNode.getText()}</a>
+                        #end
+                        <ul>
+                            ##recurse through to add the children of this node
+                            #renderNode($childNode)
+                        </ul>
+                     </li>
+                #end
+            #end
+        #end
+    #end
+#end
+
+
+#if (${control.isVisible()})
+    ## Render messages
+    #parse( "investigation/controlMessages.vm" )
+
+    ## Render static tree
+    <div>
+        <ul class="decisionreport" id="drtree" role="tree" aria-label="${screen.getTitle()}">
+        #foreach($n in ${control.getControls()})
+            #renderNode(${n})
+        #end
+        </ul>
+    </div>
+#end

@@ -1,0 +1,17 @@
+#if ((${show-progress-stages} == "true" || ${show-progress-stages} == "True") && ${progress} && ${progress.getItems().size()} > 0)
+
+    <div id="progress-stages" role="contentinfo" aria-labelledby="lbl-progress">
+        <label class="hidden" id="lbl-progress">${contentinfo-progress}</label>
+        <ul>
+        #foreach($item in ${progress.getItems()})
+            #if(${item.isActive()})
+                <li class="active" >
+            #else
+                <li class="inactive">
+            #end
+            ${item.getName()}
+            </li>
+        #end
+        </ul>
+    </div>
+#end

@@ -1,0 +1,632 @@
+    <!-- Parent screen type -->
+    
+    <xsd:complexType name="InterviewScreen">
+        <xsd:sequence>
+            <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="warning-list" type="WarningList" minOccurs="0" maxOccurs="1" />
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="text-control" type="TextControl"/>
+                <xsd:element name="date-control" type="DateControl"/>
+                <xsd:element name="datetime-control" type="DateTimeControl"/>
+                <xsd:element name="currency-control" type="CurrencyControl"/>
+                <xsd:element name="boolean-control" type="BooleanControl"/>
+                <xsd:element name="number-control" type="NumberControl"/>
+                <xsd:element name="time-of-day-control" type="TimeOfDayControl"/>
+                <xsd:element name="label-control" type="LabelControl"/>
+                <xsd:element name="goal-control" type="GoalControl"/>
+                <xsd:element name="containment-relationship-control" type="ContainmentRelationshipControl"/>
+                <xsd:element name="relationship-group-control" type="RelationshipGroupControl"/>
+                <xsd:element name="reference-relationship-control" type="ReferenceRelationshipControl"/>
+                <xsd:element name="decision-report-control" type="DecisionReportControl"/>
+                <xsd:element name="document-control" type="DocumentControl"/>
+                <xsd:element name="data-review-control" type="DataReviewContainer"/>
+            </xsd:choice>
+            <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="id" use="required" type="xsd:string"/>
+        <xsd:attribute name="context-entity-id" use="optional" type="xsd:string"/>
+        <xsd:attribute name="context-instance-id" use="optional" type="xsd:string"/>
+        <xsd:attribute name="name" use="optional" type="xsd:string"/>
+        <xsd:attribute name="title" use="optional" type="xsd:string"/>
+        <xsd:attribute name="type" use="optional" type="ScreenType"/>
+        <xsd:attribute name="is-automatic"  use="optional" type="xsd:string"/>
+    </xsd:complexType>
+    
+    <xsd:simpleType name="ScreenType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="summary" />
+            <xsd:enumeration value="question" />
+            <xsd:enumeration value="data-review" />
+            <xsd:enumeration value="decision-report" />
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="PropertiesList">
+        <xsd:sequence>
+            <xsd:element name="property" type="PropertiesListItem" minOccurs="1" maxOccurs="unbounded" />        
+        </xsd:sequence>
+    </xsd:complexType>   
+
+    <xsd:complexType name="PropertiesListItem">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="key" use="required" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="CommentaryItem">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="mime-type" use="required" type="xsd:string"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+            
+    <!-- Definitions common to all controls -->
+    
+    <xsd:complexType name="UnknownValue"/>
+    <xsd:complexType name="UncertainValue"/>
+	
+	<xsd:complexType name="ControlBase">
+		<xsd:attribute name="is-visible" use="optional" type="xsd:string"/>
+		<xsd:attribute name="caption"  use="optional" type="xsd:string"/>
+        <xsd:attribute name="caption-style" use="optional"  type="xsd:string"/>
+        <xsd:attribute name="is-html" use="optional"  type="xsd:boolean"/>
+        <xsd:attribute name="css-class" use="optional"  type="xsd:string"/>
+        <xsd:attribute name="css-style" use="optional"  type="xsd:string"/>
+	</xsd:complexType>
+    
+    <!-- Goal Control -->
+    <xsd:complexType name="GoalControl">
+		<xsd:complexContent>
+			<xsd:extension base="ControlBase">
+				<xsd:sequence>
+                    <xsd:element name="goal-value" minOccurs="1" maxOccurs="1">
+                        <xsd:complexType>
+                             <xsd:sequence>
+                                #parse("wsdl/10.2/generic_attr_value.vm")
+                            </xsd:sequence>
+                        </xsd:complexType>                        
+                    </xsd:element>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+                <xsd:attribute name="goal-id" type="xsd:string" use="required" />
+                <xsd:attribute name="entity-id" type="xsd:string" use="required" />
+                <xsd:attribute name="instance-id" type="xsd:string" use="required" />
+                <xsd:attribute name="attribute-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="has-decision-report" type="xsd:boolean" use="required" />
+				<xsd:attribute name="is-enabled" type="xsd:boolean" use="required" />
+				<xsd:attribute name="is-user-provided-caption-text" type="xsd:boolean" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <!-- Definitions common to all attribute input controls -->
+	
+	<xsd:complexType name="InputControlBase">
+		<xsd:complexContent>
+			<xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="invalid-value-change" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+                </xsd:sequence>
+				<xsd:attribute name="attribute-id" type="xsd:string" use="required" />
+				<xsd:attribute name="is-mandatory" type="xsd:string" use="optional" />
+				<xsd:attribute name="is-read-only" type="xsd:string" use="optional" />
+                <xsd:attribute name="selection-style" type="xsd:string" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <!-- Text Control -->
+    
+	<xsd:complexType name="TextControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="TextControlValue" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="TextControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="TextListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+				<xsd:attribute name="line-count" type="xsd:integer" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="TextControlValue">
+        <xsd:complexContent>
+            <xsd:extension base="TextDataType">
+                <xsd:sequence>
+                    <xsd:element name="change-point" type="TextChangePoint" minOccurs="0" maxOccurs="unbounded" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TextDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="text-val" type="xsd:string"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TextChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="TextDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TextListOptions">
+        <xsd:sequence>
+            <xsd:element name="list-option" type="TextOption" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TextOption">
+        <xsd:complexContent>
+            <xsd:extension base="TextControlValue">
+                <xsd:attribute name="display-text" type="xsd:string" use="required" />
+                <xsd:attribute name="is-visible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- Date Control -->
+
+	<xsd:complexType name="DateControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="DateControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="DateControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="DateListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />                    
+				</xsd:sequence>
+                <xsd:attribute name="input-style" type="xsd:string" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="DateDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="date-val" type="xsd:date"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DateControlValue">
+        <xsd:complexContent>
+            <xsd:extension base="DateDataType">
+                <xsd:sequence>
+                    <xsd:element name="change-point" type="DateChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType> 
+    
+    <xsd:complexType name="DateChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="DateDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DateListOptions">
+        <xsd:sequence>
+            <xsd:element name="list-option" type="DateOption" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DateOption">
+        <xsd:complexContent>
+            <xsd:extension base="DateControlValue">
+                <xsd:attribute name="display-text" type="xsd:string" use="required" />
+                <xsd:attribute name="is-visible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- Date Time Control -->    
+	
+	<xsd:complexType name="DateTimeControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="DateTimeControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="DateTimeControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="DateTimeListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+                <xsd:attribute name="input-style" type="xsd:string"/>
+                <xsd:attribute name="minute-increment" type="xsd:integer" use="optional" />
+                <xsd:attribute name="second-increment" type="xsd:integer" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="DateTimeDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="datetime-val" type="xsd:dateTime"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DateTimeChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="DateTimeDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DateTimeControlValue">
+        <xsd:complexContent>
+            <xsd:extension base="DateTimeDataType">
+                <xsd:sequence>
+                    <xsd:element name="change-point" type="DateTimeChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType> 
+    
+    <xsd:complexType name="DateTimeListOptions">
+        <xsd:sequence>
+            <xsd:element name="list-option" type="DateTimeOption" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DateTimeOption">
+        <xsd:complexContent>
+            <xsd:extension base="DateTimeControlValue">
+                <xsd:attribute name="display-text" type="xsd:string" use="required" />
+                <xsd:attribute name="is-visible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- Currency Control -->
+	
+	<xsd:complexType name="CurrencyControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="NumberControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="NumberControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="NumberListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <!-- Boolean Control -->
+	
+	<xsd:complexType name="BooleanControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="BooleanControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="BooleanControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="BooleanListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="BooleanDataType">
+          <xsd:choice minOccurs="0">
+              <xsd:element name="boolean-val" type="xsd:boolean"/>
+              <xsd:element name="uncertain-val" type="UncertainValue"/>
+            <xsd:element name="unknown-val" type="UnknownValue"/>
+          </xsd:choice>
+    </xsd:complexType>
+    
+    <xsd:complexType name="BooleanChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="BooleanDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="BooleanControlValue">
+        <xsd:complexContent>
+            <xsd:extension base="BooleanDataType">
+                <xsd:sequence>
+                    <xsd:element name="change-point" type="BooleanChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="BooleanListOptions">
+        <xsd:sequence>
+            <xsd:element name="list-option" type="BooleanOption" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="BooleanOption">
+        <xsd:complexContent>
+            <xsd:extension base="BooleanControlValue">
+                <xsd:attribute name="display-text" type="xsd:string" use="required" />
+                <xsd:attribute name="is-visible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- Number Control -->
+	
+	<xsd:complexType name="NumberControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="NumberControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="NumberControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="NumberListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="NumberDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="number-val" type="xsd:decimal"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+    </xsd:complexType>
+    
+    <xsd:complexType name="NumberChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="NumberDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="NumberControlValue">
+        <xsd:complexContent>
+            <xsd:extension base="NumberDataType">
+                <xsd:choice>
+                    <xsd:element name="change-point" type="NumberChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="NumberListOptions">
+        <xsd:sequence>
+            <xsd:element name="list-option" type="NumberOption" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="NumberOption">
+        <xsd:complexContent>
+            <xsd:extension base="NumberControlValue">
+                <xsd:attribute name="display-text" type="xsd:string" use="required" />
+                <xsd:attribute name="is-visible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- Time of day Control -->
+	
+	<xsd:complexType name="TimeOfDayControl">
+		<xsd:complexContent>
+			<xsd:extension base="InputControlBase">
+				<xsd:sequence>
+					<xsd:element name="current-value" type="TimeControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="default-value" type="TimeControlValue" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="list-options" type="TimeListOptions" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="commentary" type="CommentaryItem" minOccurs="0" maxOccurs="1" />
+				</xsd:sequence>
+                <xsd:attribute name="input-style" type="xsd:string" use="optional" />
+                <xsd:attribute name="minute-increment" type="xsd:integer" use="optional" />
+                <xsd:attribute name="second-increment" type="xsd:integer" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="TimeControlValue">
+        <xsd:complexContent>
+            <xsd:extension base="TimeDataType">
+                <xsd:choice>
+                    <xsd:element name="change-point" type="TimeChangePoint" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:choice>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TimeDataType">
+      <xsd:choice minOccurs="0">
+          <xsd:element name="time-val" type="xsd:time"/>
+          <xsd:element name="uncertain-val" type="UncertainValue"/>
+        <xsd:element name="unknown-val" type="UnknownValue"/>
+      </xsd:choice>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TimeChangePoint">
+      <xsd:complexContent>
+          <xsd:extension base="TimeDataType">
+              <xsd:attribute name="date" type="xsd:date"/>
+          </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TimeListOptions">
+        <xsd:sequence>
+            <xsd:element name="list-option" type="TimeOption" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="TimeOption">
+        <xsd:complexContent>
+            <xsd:extension base="TimeControlValue">
+                <xsd:attribute name="display-text" type="xsd:string" use="required" />
+                <xsd:attribute name="is-visible" type="xsd:boolean" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- Containment Relationship Control -->
+    
+    <xsd:simpleType name="RelationshipCardinalityType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="OneToOne" />
+            <xsd:enumeration value="OneToMany" />
+            <xsd:enumeration value="ManyToOne" />
+            <xsd:enumeration value="ManyToMany" />
+        </xsd:restriction>
+    </xsd:simpleType>
+   
+    <xsd:complexType name="ContainmentRelationshipControl">
+        <xsd:complexContent>
+			<xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="entity-instance-control" type="EntityInstanceControl" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="relationship-id" type="xsd:string" use="required" />
+                <xsd:attribute name="source-entity-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="source-instance-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="target-entity-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="relationship-type" type="RelationshipCardinalityType" use="optional" />
+                <xsd:attribute name="display-style" type="xsd:string" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>        
+	</xsd:complexType>
+
+     <xsd:complexType name="RelationshipGroupControl">
+        <xsd:complexContent>
+			<xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="entity-instance-control" type="EntityInstanceControl" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="source-entity-id" type="xsd:string" use="required" />
+                <xsd:attribute name="source-instance-id" type="xsd:string" use="required" />
+                <xsd:attribute name="relationship-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="target-entity-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="relationship-type" type="RelationshipCardinalityType" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    <!-- Entity Instance Control -->
+    
+    <xsd:complexType name="EntityInstanceControl">
+        <xsd:complexContent>
+            <xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                        <xsd:element name="text-control" type="TextControl"/>
+                        <xsd:element name="date-control" type="DateControl"/>
+                        <xsd:element name="datetime-control" type="DateTimeControl"/>
+                        <xsd:element name="currency-control" type="CurrencyControl"/>
+                        <xsd:element name="boolean-control" type="BooleanControl"/>
+                        <xsd:element name="number-control" type="NumberControl"/>
+                        <xsd:element name="time-of-day-control" type="TimeOfDayControl"/>
+                        <xsd:element name="label-control" type="LabelControl"/>
+                        <xsd:element name="goal-control" type="GoalControl"/>
+                        <xsd:element name="document-control" type="DocumentControl"/>
+                        <xsd:element name="relationship-group-control" type="RelationshipGroupControl"/>
+                        <xsd:element name="reference-relationship-control" type="ReferenceRelationshipControl"/>
+                    </xsd:choice>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                
+                <xsd:attribute name="entity-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="instance-id" type="xsd:string" use="required" />
+            </xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <!-- Reference Relationship Control -->
+    
+    <xsd:complexType name="ReferenceRelationshipControl">
+        <xsd:complexContent>
+            <xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:element name="error-list" type="ErrorList" minOccurs="0" maxOccurs="1" />
+                    <xsd:element name="set-targets" type="RelationshipTargetList" minOccurs="1" maxOccurs="1"/>
+                    <xsd:element name="possible-targets" type="RelationshipTargetList" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="relationship-id" type="xsd:string" use="required" />
+                <xsd:attribute name="source-entity-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="source-instance-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="target-entity-id" type="xsd:string" use="optional" />
+                <xsd:attribute name="relationship-type" type="RelationshipCardinalityType" use="optional" />
+                <xsd:attribute name="display-style" type="xsd:string" use="optional" />
+            </xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+    
+    <xsd:complexType name="RelationshipTargetList">
+        <xsd:sequence>
+            <xsd:element name="target" type="RelationshipTarget" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="RelationshipTarget">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="display-value" type="xsd:string" use="optional" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <!-- Data Review Control -->
+    <xsd:complexType name="DataReviewContainer">
+        <xsd:complexContent>
+			<xsd:extension base="ControlBase">
+                <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                    <xsd:element name="screen" type="InterviewScreen" minOccurs="0" maxOccurs="unbounded" />
+                    <xsd:element name="folder-control" type="DataReviewContainer" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>        
+	</xsd:complexType>
+    
+    <!-- Document Control -->
+    <xsd:complexType name="DocumentControl">
+        <xsd:complexContent>
+            <xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+                <xsd:attribute name="document-id" type="xsd:string" use="required" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <!-- Label Control -->
+    <xsd:complexType name="LabelControl">
+        <xsd:complexContent>
+            <xsd:extension base="ControlBase">
+                <xsd:sequence>
+                    <xsd:element name="properties" type="PropertiesList" minOccurs="0" maxOccurs="1" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>

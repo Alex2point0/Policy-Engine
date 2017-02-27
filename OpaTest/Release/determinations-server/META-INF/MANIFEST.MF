@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.2
+Created-By: 1.6.0_45-b06 (Sun Microsystems Inc.)
+Built-By: Oracle Policy Automation
+
+Name: common
+Implementation-Title: Oracle Policy Automation Determinations Server
+Implementation-Vendor: Oracle Corporation
+Implementation-Version: 10.4.7.86 (Thursday, 06 October 2016 10:28)
+Specification-Title: Oracle Policy Automation
+Specification-Vendor: Oracle Corporation
+Specification-Version: 10.4
+

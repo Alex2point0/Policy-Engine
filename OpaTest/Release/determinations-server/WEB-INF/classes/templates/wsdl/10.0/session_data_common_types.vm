@@ -1,0 +1,133 @@
+   <!-- Session Data Common Types -->
+	<xsd:complexType name="AttributeOutcome">
+		<xsd:attribute name="id" type="xsd:string"/>
+		<xsd:attribute name="outcome-style" type="AttributeOutcomeStyleEnum"/>
+		<xsd:attribute name="unknown-outcome-style" type="AttributeOutcomeStyleEnum"/>
+		<xsd:attribute name="known-outcome-style" type="AttributeOutcomeStyleEnum"/>
+		<xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+	</xsd:complexType>
+	<xsd:complexType name="DecisionReport">
+		<xsd:choice minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="relationship-decision-node" type="RelationshipDecisionNode" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="attribute-decision-node" type="AttributeDecisionNode" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:choice>
+		<xsd:attribute name="report-style" type="xsd:string"/>
+		<xsd:attribute name="outcome-id" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="AttributeDecisionNode">
+		<xsd:sequence>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="boolean-val" type="xsd:boolean"/>
+				<xsd:element name="date-val" type="xsd:date"/>
+				<xsd:element name="datetime-val" type="xsd:dateTime"/>
+				<xsd:element name="time-val" type="xsd:time"/>
+				<xsd:element name="number-val" type="xsd:decimal"/>
+				<xsd:element name="text-val" type="xsd:string"/>
+				<xsd:element name="uncertain-val" type="UncertainValue"/>
+				<xsd:element name="unknown-val" type="UnknownValue"/>
+			</xsd:choice>
+			<xsd:element name="change-point" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:choice minOccurs="0">
+						<xsd:element name="boolean-val" type="xsd:boolean"/>
+						<xsd:element name="date-val" type="xsd:date"/>
+						<xsd:element name="datetime-val" type="xsd:dateTime"/>
+						<xsd:element name="time-val" type="xsd:time"/>
+						<xsd:element name="number-val" type="xsd:decimal"/>
+						<xsd:element name="text-val" type="xsd:string"/>
+						<xsd:element name="uncertain-val" type="UncertainValue"/>
+						<xsd:element name="unknown-val" type="UnknownValue"/>
+					</xsd:choice>
+					<xsd:attribute name="date" type="xsd:date"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+			<xsd:element name="already-proven" type="xsd:string" minOccurs="0"/>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="attribute-decision-node" type="AttributeDecisionNode"/>
+				<xsd:element name="relationship-decision-node" type="RelationshipDecisionNode"/>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:string"/>
+		<xsd:attribute name="entity-type" type="xsd:string"/>
+		<xsd:attribute name="entity-id" type="xsd:IDREF"/>
+		<xsd:attribute name="attribute-id" type="xsd:string"/>
+		<xsd:attribute name="type" type="AttributeTypeEnum" use="optional"/>
+		<xsd:attribute name="text" type="xsd:string"/>
+		<xsd:attribute name="start-relevance" type="xsd:date" use="optional"/>
+		<xsd:attribute name="end-relevance" type="xsd:date" use="optional"/>
+		<xsd:attribute name="inferencing-type" type="InferencingTypeEnum"/>
+	</xsd:complexType>
+	<xsd:complexType name="RelationshipDecisionNode">
+		<xsd:sequence>
+			<xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+			<xsd:element name="already-proven" type="xsd:string" minOccurs="0"/>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="attribute-decision-node" type="AttributeDecisionNode"/>
+				<xsd:element name="relationship-decision-node" type="RelationshipDecisionNode"/>
+			</xsd:choice>
+		</xsd:sequence>
+		<xsd:attribute name="relationship-name" type="xsd:string"/>
+		<xsd:attribute name="source" type="xsd:IDREF"/>
+		<xsd:attribute name="target" type="xsd:string"/>
+		<xsd:attribute name="id" type="xsd:string"/>
+		<xsd:attribute name="state" type="KnownValueEnum"/>
+		<xsd:attribute name="inferred" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="UserData">
+		<xsd:sequence>
+			<xsd:any/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="AttributeOutcomeStyleEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="value-only"/>
+			<xsd:enumeration value="decision-report"/>
+			<xsd:enumeration value="base-attributes"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="RelationshipOutcomeStyleEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="value-only"/>
+			<xsd:enumeration value="decision-report"/>
+			<xsd:enumeration value="base-attributes"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="InferencingTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="base-level"/>
+			<xsd:enumeration value="goal"/>
+			<xsd:enumeration value="intermediate"/>
+			<xsd:enumeration value="stand-alone"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="AttributeTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="boolean"/>
+			<xsd:enumeration value="text"/>
+			<xsd:enumeration value="number"/>
+			<xsd:enumeration value="currency"/>
+			<xsd:enumeration value="date"/>
+			<xsd:enumeration value="datetime"/>
+			<xsd:enumeration value="timeofday"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="KnownValueEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="known"/>
+			<xsd:enumeration value="unknown"/>
+			<xsd:enumeration value="uncertain"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="RelationshipTarget">
+		<xsd:attribute name="entity-id" type="xsd:IDREF" use="required"/>
+	</xsd:complexType>
+	<xsd:complexType name="UnknownValue"/>
+	<xsd:complexType name="UncertainValue"/>
+	<xsd:complexType name="RelationshipOutcome">
+		<xsd:attribute name="id" type="xsd:string"/>
+		<xsd:attribute name="outcome-style" type="RelationshipOutcomeStyleEnum"/>
+		<xsd:attribute name="unknown-outcome-style" type="RelationshipOutcomeStyleEnum"/>
+		<xsd:attribute name="known-outcome-style" type="RelationshipOutcomeStyleEnum"/>
+		<xsd:attribute name="screen-if-unknown" type="xsd:boolean"/>
+	</xsd:complexType>

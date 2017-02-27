@@ -1,0 +1,173 @@
+<root schema-version="1" product-version="10.4.7.86">
+  <entities>
+    <entity ref="global">
+      <attribute name="b1" type="boolean" public-name="snow_condition_satisfied">
+        <text>
+          <base>the condition for snow is satisfied</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),ob('the condition for snow',singular))</parse>
+        </text>
+      </attribute>
+      <attribute name="p1" type="number" public-name="current_temperature">
+        <text>
+          <base>the current temperature</base>
+        </text>
+      </attribute>
+      <attribute name="b2" type="boolean" public-name="overcast_condition_satisfied">
+        <text>
+          <base>the condition is overcast</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the condition',singular),o('overcast'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b3" type="boolean" public-name="dark_clouds_satisfied">
+        <text>
+          <base>the conditions for dark clouds is satisfied</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),ob('the conditions for dark clouds',singular))</parse>
+        </text>
+      </attribute>
+      <attribute name="b4" type="boolean" public-name="rain_today">
+        <text>
+          <base>it is gonna rain today</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('it',singular),o('gonna rain today'))</parse>
+        </text>
+      </attribute>
+      <attribute name="p10" type="text" public-name="ENGINE_LINE">
+        <text>
+          <base>the engine line</base>
+        </text>
+      </attribute>
+      <attribute name="b5" type="boolean">
+        <text>
+          <base>the engine satisfies d1049248 requirements</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),sb('the engine',singular),o('d1049248 requirements'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b6" type="boolean" public-name="s_dgop">
+        <text>
+          <base>the Design the Geometry of the Parts is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Design the Geometry of the Parts',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b7" type="boolean" public-name="s_msa">
+        <text>
+          <base>the mechanical and stress analysis is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the mechanical and stress analysis',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b8" type="boolean" public-name="s_phtsfa">
+        <text>
+          <base>the Perform Heat Transfer and Secondary Flow Analysis is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Perform Heat Transfer and Secondary Flow Analysis',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b9" type="boolean" public-name="s_docah">
+        <text>
+          <base>the Determine Operating Clearance with Adjoining Hardware is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Determine Operating Clearance with Adjoining Hardware',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b10" type="boolean" public-name="s_fa">
+        <text>
+          <base>the failure analysis is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the failure analysis',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b11" type="boolean" public-name="s_madssa">
+        <text>
+          <base>the Mechanical Analysis Dynamics and Structural System Analysis is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Mechanical Analysis Dynamics and Structural System Analysis',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b12" type="boolean" public-name="td_eaicp">
+        <text>
+          <base>the Engineering Analysis Initial Conditions and Parameters is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Engineering Analysis Initial Conditions and Parameters',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b13" type="boolean" public-name="td_dcid_cid">
+        <text>
+          <base>the DCID and Change in Design is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the DCID and Change in Design',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b14" type="boolean" public-name="td_abc">
+        <text>
+          <base>the Analysis Boundary Conditions is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Analysis Boundary Conditions',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b15" type="boolean" public-name="td_samrs">
+        <text>
+          <base>the Structural Analysis Models and Results is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Structural Analysis Models and Results',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b16" type="boolean" public-name="td_htsfm">
+        <text>
+          <base>the Heat Transfer and Secondary Flow Models is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Heat Transfer and Secondary Flow Models',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b17" type="boolean" public-name="td_23dgm">
+        <text>
+          <base>the 2 and 3 Dimensional Geometrical Models is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the 2 and 3 Dimensional Geometrical Models',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b18" type="boolean" public-name="td_amr">
+        <text>
+          <base>the Aerodynamic Model Results is applicable</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the Aerodynamic Model Results',singular),o('applicable'))</parse>
+        </text>
+      </attribute>
+      <attribute name="p14" type="text" public-name="engine_part_code">
+        <text>
+          <base>the engine part code</base>
+        </text>
+      </attribute>
+      <attribute name="p15" type="text" public-name="ln_number">
+        <text>
+          <base>the ln number</base>
+        </text>
+      </attribute>
+      <attribute name="b19" type="boolean" public-name="lr_050503128">
+        <text>
+          <base>the part satisfies 050503128 license requirements</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),sb('the part',singular),o('050503128 license requirements'))</parse>
+        </text>
+      </attribute>
+    </entity>
+    <entity id="license" name="the license" identifying-attribute-name="license_name" identifying-attribute-text="the license" containment-relationship-id="licenseforengineline" containment-parent-id="global" public-id="License">
+      <attribute name="p11" type="text" substitutable="true" default-gender="generic" public-name="license_name">
+        <text>
+          <base>the license</base>
+        </text>
+      </attribute>
+    </entity>
+    <entity id="services" name="the services" identifying-attribute-name="service_name" identifying-attribute-text="the services" containment-relationship-id="serviceunderlicense" containment-parent-id="license" public-id="services">
+      <attribute name="p12" type="text" substitutable="true" default-gender="generic" public-name="service_name">
+        <text>
+          <base>the services</base>
+        </text>
+      </attribute>
+    </entity>
+    <entity id="technicaldata" name="the technical data" identifying-attribute-name="the_techincal_data_name" identifying-attribute-text="the technical data" containment-relationship-id="technicaldataunderlicense" containment-parent-id="license" public-id="technical_data">
+      <attribute name="p13" type="text" substitutable="true" default-gender="generic" public-name="the_techincal_data_name">
+        <text>
+          <base>the technical data</base>
+        </text>
+      </attribute>
+    </entity>
+  </entities>
+  <relationships>
+    <relationship source="global" target="license" text="the license for engine line" relationship-id="licenseforengineline" reverse-relationship-id="global_licenseforengineline_rev" reverse-text="" type="OneToMany" is-computed="false" is-containment="true" public-id="license_relationship" reverse-public-id="license_relationship_reverse" />
+    <relationship source="license" target="services" text="the service under license" relationship-id="serviceunderlicense" reverse-relationship-id="license_serviceunderlicense_rev" reverse-text="" type="OneToMany" is-computed="false" is-containment="true" public-id="service_under_license" reverse-public-id="service_under_license_reverse" />
+    <relationship source="license" target="technicaldata" text="the technical data under license" relationship-id="technicaldataunderlicense" reverse-relationship-id="license_technicaldataunderlicense_rev" reverse-text="" type="OneToMany" is-computed="false" is-containment="true" public-id="technical_data_under_license" reverse-public-id="technical_data_under_license_reverse" />
+  </relationships>
+  <rules />
+  <interactive-items>
+    <folders />
+    <screens />
+    <documents />
+  </interactive-items>
+  <rule-folders />
+</root>

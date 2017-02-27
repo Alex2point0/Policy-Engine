@@ -1,0 +1,27 @@
+<xsd:simpleType name="OutcomeStyleEnum">
+    <xsd:restriction base="xsd:string">
+        <xsd:enumeration value="value-only"/>
+        <xsd:enumeration value="decision-report"/>
+        <xsd:enumeration value="base-attributes"/>
+    </xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="AttributeTypeEnum">
+<xsd:restriction base="xsd:string">
+    <xsd:enumeration value="boolean"/>
+    <xsd:enumeration value="text"/>
+    <xsd:enumeration value="number"/>
+    <xsd:enumeration value="currency"/>
+    <xsd:enumeration value="date"/>
+    <xsd:enumeration value="datetime"/>
+    <xsd:enumeration value="timeofday"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="StateEnum">
+<xsd:restriction base="xsd:string">
+    <xsd:enumeration value="known"/>
+    <xsd:enumeration value="unknown"/>
+    <xsd:enumeration value="uncertain"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:complexType name="UnknownValue"/>
+<xsd:complexType name="UncertainValue"/>

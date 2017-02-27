@@ -1,0 +1,79 @@
+<root schema-version="1" product-version="10.4.7.86">
+  <entities>
+    <entity ref="global">
+      <attribute name="b1" type="boolean" ruleburst="true" is-used="True">
+        <text lang="en-US">
+          <base>the condition for snow is satisfied</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),ob('the condition for snow',singular))</parse>
+        </text>
+      </attribute>
+      <attribute name="b2" type="boolean" ruleburst="true" is-used="True">
+        <text lang="en-US">
+          <base>the condition is overcast</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('the condition',singular),o('overcast'))</parse>
+        </text>
+      </attribute>
+      <attribute name="p1" type="number" ruleburst="true" is-used="True" default-gender="neuter">
+        <text lang="en-US">
+          <base>the current temperature</base>
+        </text>
+      </attribute>
+      <attribute name="b3" type="boolean" ruleburst="true" is-used="True">
+        <text lang="en-US">
+          <base>it is gonna rain today</base>
+          <parse>s(ver('10.4.7.86'),v(be,t(simple,present,normal)),sb('it',singular),o('gonna rain today'))</parse>
+        </text>
+      </attribute>
+      <attribute name="b4" type="boolean" ruleburst="true" is-used="True">
+        <text lang="en-US">
+          <base>the conditions for dark clouds is satisfied</base>
+          <parse>s(ver('10.4.7.86'),v(satisfy,t(simple,present,normal)),ob('the conditions for dark clouds',singular))</parse>
+        </text>
+      </attribute>
+    </entity>
+  </entities>
+  <relationships />
+  <rules>
+    <rule id="0" name="the condition for snow is satisfied" ruleburst="true" concludes="b1" folder="0">
+      <rule-xml>
+        <conclude attr-id="b1" entity-id="global" scope-id="global0">
+          <value>
+            <true-value />
+          </value>
+          <condition>
+            <and>
+              <less-than-equals>
+                <attribute attr-id="p1" />
+                <number-value>0</number-value>
+              </less-than-equals>
+              <attribute attr-id="b2" />
+            </and>
+          </condition>
+          <otherwise>
+            <false-value />
+          </otherwise>
+        </conclude>
+      </rule-xml>
+    </rule>
+    <rule id="1" name="it is gonna rain today" ruleburst="true" concludes="b3" folder="0" source-offset="98">
+      <rule-xml>
+        <conclude attr-id="b3" entity-id="global" scope-id="global0">
+          <value>
+            <true-value />
+          </value>
+          <condition>
+            <and>
+              <not>
+                <attribute attr-id="b1" />
+              </not>
+              <attribute attr-id="b4" />
+            </and>
+          </condition>
+          <otherwise>
+            <false-value />
+          </otherwise>
+        </conclude>
+      </rule-xml>
+    </rule>
+  </rules>
+</root>

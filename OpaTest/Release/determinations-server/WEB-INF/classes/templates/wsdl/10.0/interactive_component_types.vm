@@ -1,0 +1,112 @@
+<!---Interactive components types -->
+   <xsd:element name="screen-definition" type="ScreenDefinition"/>
+   <xsd:complexType name="ScreenSummary">
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<xsd:attribute name="name" type="xsd:string"/>
+		<xsd:attribute name="title" type="xsd:string"/>
+		<xsd:attribute name="is-automatic" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="entity-type" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="ScreenDefinition">
+		<xsd:sequence>
+			<xsd:element name="screen-control" type="ScreenControl" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:string" use="required"/>
+		<xsd:attribute name="name" type="xsd:string"/>
+		<xsd:attribute name="title" type="xsd:string"/>
+		<xsd:attribute name="is-automatic" type="xsd:boolean" use="required"/>
+		<xsd:attribute name="entity-type" type="xsd:string"/>
+		<xsd:attribute name="entity-id" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="ListScreenControls">
+		<xsd:sequence>
+			<xsd:element name="screen-control" type="ScreenControl" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ScreenControl">
+		<xsd:sequence>
+			<xsd:element name="code-table-item" type="CodeTableItem" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="instance-template" type="ScreenControl" minOccurs="0"/>
+			<xsd:element name="properties" type="ListCustomProperties" minOccurs="0"/>
+			<xsd:element name="child-controls" type="ListScreenControls" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="control-type" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="custom"/>
+					<xsd:enumeration value="entity"/>
+					<xsd:enumeration value="fixed"/>
+					<xsd:enumeration value="flow"/>
+					<xsd:enumeration value="entity-association"/>
+					<xsd:enumeration value="date"/>
+					<xsd:enumeration value="datetime"/>
+					<xsd:enumeration value="document"/>
+					<xsd:enumeration value="timeofday"/>
+					<xsd:enumeration value="goal"/>
+					<xsd:enumeration value="group"/>
+					<xsd:enumeration value="label"/>
+					<xsd:enumeration value="link"/>
+					<xsd:enumeration value="money"/>
+					<xsd:enumeration value="number"/>
+					<xsd:enumeration value="boolean"/>
+					<xsd:enumeration value="selection"/>
+					<xsd:enumeration value="text"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="text-style" type="xsd:string" use="optional"/>
+		<xsd:attribute name="default" type="xsd:string" use="optional"/>
+		<xsd:attribute name="line-count" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:nonNegativeInteger"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="value" use="optional"/>
+		<xsd:attribute name="attribute-id" type="xsd:string" use="optional"/>
+		<xsd:attribute name="caption" type="xsd:string" use="optional"/>
+		<xsd:attribute name="is-inferred" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:boolean"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="is-mandatory" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:boolean"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="is-read-only" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:boolean"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="is-visible" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:boolean"/>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="style" use="optional">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="Radiobutton"/>
+					<xsd:enumeration value="Listbox"/>
+					<xsd:enumeration value="Dropdown"/>
+					<xsd:enumeration value="Checkboxes"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="entity-type" type="xsd:string" use="optional"/>
+		<xsd:attribute name="entity-id" type="xsd:string" use="optional"/>
+		<xsd:attribute name="relationship" type="xsd:string" use="optional"/>
+		<xsd:attribute name="document-type" type="xsd:string" use="optional"/>
+		<xsd:attribute name="config-file" type="xsd:string" use="optional"/>
+		<xsd:attribute name="required-decision-reports" type="xsd:string" use="optional"/>
+		<xsd:attribute name="template-file" type="xsd:string" use="optional"/>
+		<xsd:attribute name="flow-id" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+	<xsd:complexType name="CodeTableItem">
+		<xsd:attribute name="code" use="optional"/>
+		<xsd:attribute name="is-visible" use="optional"/>
+		<xsd:attribute name="value" use="optional"/>
+	</xsd:complexType>
+

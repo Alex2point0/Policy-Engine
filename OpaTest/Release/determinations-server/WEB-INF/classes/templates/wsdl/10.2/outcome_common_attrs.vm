@@ -1,0 +1,6 @@
+<!--this property will only be provided in a response for relationship outcomes -->
+    <xsd:attribute name="inferred" type="xsd:boolean" use="optional"/>
+    <!--the following properties are used to configure relationship outcomes. The requestor must either specify the 'outcome-style' property or both the 'unknown-outcome-style' and the 'known-outcome-style' -->
+    <xsd:attribute name="outcome-style" type="OutcomeStyleEnum" use="optional"/>
+    <xsd:attribute name="unknown-outcome-style" type="OutcomeStyleEnum" use="optional"/>
+    <xsd:attribute name="known-outcome-style" type="OutcomeStyleEnum" use="optional"/>

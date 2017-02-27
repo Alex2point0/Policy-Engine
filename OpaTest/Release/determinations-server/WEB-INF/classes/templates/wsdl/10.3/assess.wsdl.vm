@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+#set($serviceName = "${service.getName()}_${service.getRulebaseXmlId()}")
+<wsdl:definitions name="determinations_service"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:${service.getNamspacePrefix()}="${service.getTargetNamespace()}"
+                  xmlns:${soap-prefix}="${soap-namespace}"
+                  xmlns:${i18n-prefix}="${i18n-namespace}"
+                  targetNamespace="${service.getTargetNamespace()}">
+
+  <wsdl:types>
+    ${wsdl-types}
+  </wsdl:types>
+
+  <wsdl:message name="ListGoalsResponse">
+    <wsdl:part element="${service.getNamspacePrefix()}:list-goals-response" 
+      name="ListGoalsResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="ListGoalsRequest">
+    <wsdl:part element="${service.getNamspacePrefix()}:list-goals-request" name="ListGoalsRequest" />
+  </wsdl:message>
+
+  <wsdl:message name="AssessResponse">
+    <wsdl:part element="${service.getNamspacePrefix()}:assess-response" name="AssessResponse" />
+  </wsdl:message>
+
+  <wsdl:message name="AssessRequest">
+    <wsdl:part element="${service.getNamspacePrefix()}:assess-request" name="AssessRequest" />
+  </wsdl:message>
+
+  <wsdl:portType name="${serviceName}_type">
+        #foreach($action in ${service.getAllActions()})
+        <wsdl:operation name="${action.getName()}">
+            <wsdl:input message="${service.getNamspacePrefix()}:${action.getName()}Request"/>
+            <wsdl:output message="${service.getNamspacePrefix()}:${action.getName()}Response"/>
+        </wsdl:operation>
+        #end
+    </wsdl:portType>
+
+    <wsdl:binding name="${serviceName}" type="${service.getNamspacePrefix()}:${serviceName}_type">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        #foreach($action in ${service.getAllActions()})
+        <wsdl:operation name="${action.getName()}">
+            <soap:operation soapAction="${action.getSoapAction()}"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        #end
+    </wsdl:binding>
+
+    <wsdl:service name="${serviceName}">
+        <wsdl:port binding="${service.getNamspacePrefix()}:${serviceName}" name="${serviceName}_SOAP">
+            <soap:address location="${request.getAbsoluteServiceURL(${service.getEndpoint()})}"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

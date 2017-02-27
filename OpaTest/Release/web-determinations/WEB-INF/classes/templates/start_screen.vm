@@ -1,0 +1,57 @@
+## The landing page for the default web-determinations shell.
+## This page provides the mechanism to start an interview for a particular rulebase.
+#if( ${pagedir-right-to-left} == "true" || ${pagedir-right-to-left} == "True" )
+    #set($pagedirString = "rtl")
+#else
+    #set($pagedirString = "ltr")
+#end
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML+ARIA 1.0//EN" "http://www.w3.org/WAI/ARIA/schemata/html4-aria-1.dtd">
+<html lang="${locale}" dir="${pagedirString}">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+        <meta name="OPA-Release-Version" content="${version}" >
+        <title>${header-title}</title>
+        <link rel="stylesheet" type="text/css" href="${context-root-path}${resource-request}/reset.css" >
+        <style type="text/css">
+<!--
+${css-text}
+-->
+        </style>
+    </head>
+
+    <body>
+        <div id="wrapper">
+            #parse("includes/header.vm")
+            #set($show-empty-menu-bar = true)
+            #parse("includes/menu-bar.vm")
+
+
+            <div id="content" role="main">
+                <div class="left"></div>
+                <div class="center">
+                    <div class="selection-list">
+                        <h2 id="list-caption">${title}</h2>
+                        <div>
+                            <div class="column">
+                                <ul aria-labelledby="list-caption" role="navigation">
+                            #foreach($rulebase in $rulebases)
+                                    <li><a href="${rulebase.value}">${rulebase.key}</a></li>
+                                #if($velocityCount % 23 == 0)
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <ul>
+                                #end
+                            #end
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right"></div>
+            </div>
+        </div>
+        #parse("includes/footer.vm")
+    </body>
+</html>
